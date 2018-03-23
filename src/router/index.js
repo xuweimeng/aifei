@@ -17,6 +17,7 @@ const collection = () => import('@/view/collection/collection')
 const modifyNickname = () => import('@/view/myAccount/modifyNickname/modifyNickname')
 const powerDetails = () => import('@/view/nearPower/powerDetails/powerDetails')
 const pay = () => import('@/view/nearPower/pay/pay')
+const chargeNum = () => import('@/view/charge/chargeNum/chargeNum')
 
 export default new Router({
   routes: [
@@ -41,7 +42,12 @@ export default new Router({
     {
       path: '/charge',
       component: charge,
-      name: 'charge'
+      name: 'charge',
+      children: [{
+        path: 'chargeNum',
+        component: chargeNum,
+        name: 'chargeNum'
+      }]
     },
     {
       path: '/recharge',

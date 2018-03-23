@@ -4,8 +4,9 @@
     <p class="phoneYe">手机余额</p>
     <p class="money">$100.00</p>
     <div class="startBtn">
-      <x-button @click="chargeBtn" class="chargeBtn">充值</x-button>
+      <x-button @click.native="chargeBtn" class="chargeBtn">充值</x-button>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -23,7 +24,7 @@ export default {
   methods: {
     // 充值按钮
     chargeBtn () {
-
+      this.$router.push({path: '/charge/chargeNum'})
     }
   }
 }
@@ -33,8 +34,10 @@ export default {
 @import '../../styles/mixin.less';
 
   .charge {
+    background: #fff;
     .yue {
-      margin: 4rem auto 0;
+      margin: auto;
+      padding-top: 4rem; 
       .wh(4.5rem, 4.5rem);
       clear: both;
       display: block;
