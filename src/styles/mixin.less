@@ -1,0 +1,90 @@
+@blue: #3190e8;
+@bc: #e4e4e4;
+@fc:#fff;
+// 背景图片地址和大小
+.bis( @url ) {
+  background-image: url(@url);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.borderRadius( @radius ) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+
+//定位全屏
+.allcover {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+//定位上下左右居中
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+//定位上下居中
+.ct {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+//定位上下居中
+.cl {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+//宽高
+.wh(@width, @height) {
+  width: @width;
+  height: @height;
+}
+
+//字体大小，颜色
+.sc(@size, @color) {
+  font-size: @size;
+  color: @color;
+}
+
+//flex 布局和 子元素 对其方式
+.fj(@type: space-between) {
+  display: flex;
+  justify-content: @type;
+}
+
+//相对定位
+.rel {
+  position: relative;
+}
+
+//绝对定位
+.abs {
+  position: absolute;
+}
+
+//超出隐藏
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fixPosition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #efefef;
+}

@@ -1,0 +1,40 @@
+.allcover {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.ct {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.cl {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.rel {
+  position: relative;
+}
+.abs {
+  position: absolute;
+}
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fixPosition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #FBF9FE;
+}
