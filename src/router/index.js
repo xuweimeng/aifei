@@ -12,7 +12,7 @@ const cardBind = () => import('@/view/cardBind/cardBind')
 const charging = () => import('@/view/charging/charging')
 const chargeRecord = () => import('@/view/chargeRecord/chargeRecord')
 const chargeMeal = () => import('@/view/chargeMeal/chargeMeal')
-const nearPower = () => import('@/view/nearPower/nearPower')
+// const nearPower = () => import('@/view/nearPower/nearPower')
 const collection = () => import('@/view/collection/collection')
 const modifyNickname = () => import('@/view/myAccount/modifyNickname/modifyNickname')
 const powerDetails = () => import('@/view/nearPower/powerDetails/powerDetails')
@@ -79,29 +79,41 @@ export default new Router({
       component: chargeMeal,
       name: 'chargeMeal'
     },
-    {
-      path: '/nearPower',
-      component: nearPower,
-      name: 'nearPower',
-      children: [
-        {
-          path: 'powerDetails',
-          component: powerDetails,
-          name: 'powerDetails',
-          children: [
-            {
-              path: 'pay',
-              component: pay,
-              name: 'pay'
-            }
-          ]
-        }
-      ]
-    },
+    // {
+    //   path: '/nearPower',
+    //   component: nearPower,
+    //   name: 'nearPower',
+    //   children: [
+    //     {
+    //       path: 'powerDetails',
+    //       component: powerDetails,
+    //       name: 'powerDetails',
+    //       children: [
+    //         {
+    //           path: 'pay',
+    //           component: pay,
+    //           name: 'pay'
+    //         }
+    //       ]
+    //    }
+    //   ]
+    // },
     {
       path: '/collection',
       component: collection,
       name: 'collection'
+    },
+    {
+      path: '/powerDetails',
+      component: powerDetails,
+      name: 'powerDetails',
+      children: [
+        {
+          path: 'pay',
+          component: pay,
+          name: 'pay'
+        }
+      ]
     }
   ]
 })

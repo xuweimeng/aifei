@@ -23,8 +23,8 @@
       <flexbox-item><i class="iconfont">&#xe797;</i>联系</flexbox-item>
     </flexbox> -->
     <!-- 充电机使用情况 -->
-    <flexbox class="electric">
-      <flexbox-item v-for="i in 5" :key="i">
+    <div class="electric">
+      <div v-for="i in 6" :key="i" class="pp">
         <div class="elekou rel">
           <div class="lines1 abs"></div>
           <div class="lines2 abs"></div>
@@ -32,10 +32,10 @@
           <div class="text2 abs">充电</div>
           <img src="../../../assets/img/kong.png" alt="" class="kong">
         </div>
-      </flexbox-item>
-    </flexbox>
+      </div>
+    </div>
     <router-view></router-view>
-    
+
   </div>
 </template>
 
@@ -50,6 +50,22 @@ export default {
     XButton,
     Grid,
     GridItem
+  },
+  mounted () {
+    this.getCode()
+  },
+  methods: {
+    getCode () {
+      // function getQueryString (name) {
+      //   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+      //   var r = window.location.search.substr(1).match(reg)
+      //   if (r != null) return unescape(r[2]); return null
+      // }
+      // var code = getQueryString('code')
+      var code = this.getUrl('code')
+      // alert('code=' + this.$route.query.code)
+      console.log(code)
+    }
   }
 }
 </script>
@@ -86,7 +102,7 @@ export default {
             color: #000;
           }
         }
-      } 
+      }
       .bianhao {
         padding-left: 0.5rem;
         height: 1.25rem;
@@ -120,10 +136,12 @@ export default {
     }
   }
   .electric {
-    .vux-flexbox-item {
+    .pp {
+      margin-left: 0!important;
+      margin-top: 1rem;
+      float: left;
       .wh(3.2rem, 3.2rem);
       background: #fff;
-      margin-left: 0!important;
       .elekou {
         margin: 0.19rem .202rem;
         .wh(2.7rem, 2.7rem);

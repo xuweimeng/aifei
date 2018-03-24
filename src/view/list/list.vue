@@ -68,8 +68,8 @@
     </router-link>
   </group>
   <group>
-    <router-link tag="div" class="tab-item" to="/nearPower">
-      <cell title="附近电站" value="" is-link class="tab-link">
+    <router-link tag="div" class="tab-item" to="/powerDetails">
+      <cell title="使用情况" value="" is-link class="tab-link">
         <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a0;</i>
       </cell>
        <cell-box style="padding: 0;"></cell-box>
@@ -86,7 +86,7 @@
   <router-link tag="div" class="tab-item" to="/userPage">
     <span class="tab-link">代理加盟</span>
   </router-link> -->
- 
+
 </div>
 </template>
 
@@ -131,5 +131,3 @@ export default {
     left: 15px;
   }
 </style>
-
-

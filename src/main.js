@@ -6,6 +6,7 @@ import App from './App'
 import { WechatPlugin, AjaxPlugin } from 'vux'
 import store from './store'
 import './config/rem'
+import getQueryString from './config/getUrl'
 
 Vue.use(AjaxPlugin)
 Vue.use(WechatPlugin)
@@ -13,6 +14,7 @@ Vue.use(VueRouter)
 
 FastClick.attach(document.body)
 Vue.config.productionTip = false
+Vue.prototype.getUrl = getQueryString
 
 console.log(Vue.wechat)
 router.beforeEach(function (to, from, next) {

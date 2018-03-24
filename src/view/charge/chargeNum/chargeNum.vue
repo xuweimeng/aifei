@@ -7,13 +7,13 @@
         default-item-class="demo4-item"
         selected-item-class="demo4-item-selected"
         class="checkerList">
-          <checker-item :value="1" @on-item-click="onItemClick2">5元<br><span class="spanText">售价：5.00元</span></checker-item>
-          <checker-item :value="2" @on-item-click="onItemClick2">10元<br><span class="spanText">售价：10.00元</span></checker-item>
-          <checker-item :value="3" @on-item-click="onItemClick2">31元<br><span class="spanText">售价：30.00元</span></checker-item>
-          <checker-item :value="4" @on-item-click="onItemClick2">52元<br><span class="spanText">售价：50.00元</span></checker-item>
-          <checker-item :value="5" @on-item-click="onItemClick2">104元<br><span class="spanText">售价：100.00元</span></checker-item>
-          <checker-item :value="6" @on-item-click="onItemClick2">207元<br><span class="spanText">售价：200.00元</span></checker-item>
-          <checker-item :value="7" @on-item-click="onItemClick2">311元<br><span class="spanText">售价：300.00元</span></checker-item>
+          <checker-item :value="1" @on-item-click="onItemClick2">5元<br><span class="spanText">售价:5.00元</span></checker-item>
+          <checker-item :value="2" @on-item-click="onItemClick2">10元<br><span class="spanText">售价:10.00元</span></checker-item>
+          <checker-item :value="3" @on-item-click="onItemClick2">31元<br><span class="spanText">售价:30.00元</span></checker-item>
+          <checker-item :value="4" @on-item-click="onItemClick2">52元<br><span class="spanText">售价:50.00元</span></checker-item>
+          <checker-item :value="5" @on-item-click="onItemClick2">104元<br><span class="spanText">售价:100.00元</span></checker-item>
+          <checker-item :value="6" @on-item-click="onItemClick2">207元<br><span class="spanText">售价:200.00元</span></checker-item>
+          <checker-item :value="7" @on-item-click="onItemClick2">311元<br><span class="spanText">售价:300.00元</span></checker-item>
         </checker>
     </div>
     <div class="goChargeBtn">
@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-      defaultChecker: 1, // 默认选中的checker
+      defaultChecker: 1// 默认选中的checker
     }
   },
   methods: {
@@ -82,7 +82,8 @@ export default {
   }
   //默认按钮颜色
   .demo4-item {
-    padding: .2rem 0;
+    margin-top: .4rem;
+    padding: .3rem 0;
     width: 4.6rem;
     color: #999;
     font-size: .7rem;
@@ -94,7 +95,30 @@ export default {
   //选中按钮颜色
   .demo4-item-selected {
     color: #4e82d1;
-    background: #4e82d1;
+    border-color: #4e82d1;
+    position: relative;
+    /* background: #4e82d1; */
+  }
+  .demo4-item-selected ::after {
+    content: "";
+    .wh(0, 0);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    border-top:1rem solid transparent;
+    border-left:1rem solid transparent;
+    border-right:1rem solid #0066cc;
+  }
+  .demo4-item-selected ::before {
+    content: "✔";
+    color: #fff;
+    width: .8rem;
+    height: .8rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
   }
   .spanText {
     font-size: .6rem;
