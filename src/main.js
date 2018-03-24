@@ -11,6 +11,7 @@ import getQueryString from './config/getUrl'
 Vue.use(AjaxPlugin)
 Vue.use(WechatPlugin)
 Vue.use(VueRouter)
+// console.log(Vue.http)
 
 FastClick.attach(document.body)
 Vue.config.productionTip = false

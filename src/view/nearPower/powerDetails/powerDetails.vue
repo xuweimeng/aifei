@@ -41,6 +41,8 @@
 
 <script>
 import { Flexbox, FlexboxItem, Divider, Search, XButton, Grid, GridItem } from 'vux'
+import { API } from '../../../serve/index'
+
 export default {
   components: {
     Flexbox,
@@ -56,15 +58,15 @@ export default {
   },
   methods: {
     getCode () {
-      // function getQueryString (name) {
-      //   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
-      //   var r = window.location.search.substr(1).match(reg)
-      //   if (r != null) return unescape(r[2]); return null
-      // }
-      // var code = getQueryString('code')
-      var code = this.getUrl('code')
-      // alert('code=' + this.$route.query.code)
-      console.log(code)
+      API.powerDetails.list({
+        'deviceCode': '001'
+      }).then((res) => {
+        console.log(res)
+        if (res.code === 0) {
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }
