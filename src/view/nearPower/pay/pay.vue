@@ -79,6 +79,7 @@
 <script>
 import { Divider, Flexbox, FlexboxItem, Tab, TabItem, XButton, CheckIcon, Checklist, Checker, CheckerItem, cookie } from 'vux'
 import { API } from '../../../serve/index'
+// import '../../../config/jweixin-1.2.0'
 export default {
   components: {
     Flexbox,
@@ -153,6 +154,8 @@ export default {
         'Portnum': this.Portnum
       }).then((res) => {
         if (res.code === 0) {
+          console.log('test-------------------------156')
+          console.log(res)
           this.openId = res.data.openid
           this.deviceinfoEntity = res.data.deviceinfoEntity
           this.chargeTypeList = res.data.chargeTypeList
@@ -224,6 +227,7 @@ export default {
         'code': this.code
       }).then((res) => {
         console.log(res)
+        this.wxPay(res.data)
       }).catch((error) => {
         console.log(error)
       })
@@ -235,9 +239,9 @@ export default {
         'rurl': url
       }).then((res) => {
         console.log(res)
-        cookie.set('openId', res.data.openid)
-        alert('oppenid=' + res.data.openid)
-        this.wxPay(res.data.openid)
+        // cookie.set('openId', res.data.openid)
+        // alert('oppenid=' + res.data.openid)
+        
       }).catch((error) => {
         console.log(error)
       })
