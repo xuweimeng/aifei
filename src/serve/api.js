@@ -16,7 +16,7 @@ axios.interceptors.request.use(function (config) {
   config.data = qs.stringify(config.data)
   // 在发送请求之前做些什么
   config.headers = {
-    'Content-Type': 'application/x-www-form-urlencodedcharset=utf-8'
+    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
   }
   return config
 }, function (error) {
@@ -32,7 +32,11 @@ function fetch (type, url, params) {
         params: params
       })
     .then(response => {
-      resolve(JSON.parse(response.data))
+      if (typeof (response.data) === 'object') {
+        resolve(JSON.stringify(response.data))
+      } else {
+        resolve(JSON.parse(response.data))
+      }
     }, err => {
       reject(err)
     })
@@ -58,7 +62,44 @@ export const powerDetails = {
   /*
   *获取列表
   */
-  list (data) {
+  getDeviceInfo (data) {
     return fetch('post', '/api/getDeviceInfo', data)
+  },
+  /*
+  *支付方式详情接口
+  */
+  payList (data) {
+    return fetch('post', '/api/getChargeInfo', data)
+  },
+  /*
+  *查询我的接口,所有信息展示
+  */
+  getmyinfo (data) {
+    return fetch('post', '/api/getmyinfo', data)
+  },
+  /*
+  *创建订单接口
+  */
+  createOrder (data) {
+    return fetch('post', '/api/createOrder', data)
+  },
+  /*
+  *获取微信jssdk配置信息
+  */
+  config (data) {
+    return fetch('get', '/api/config', data)
+  },
+  /*
+  *获取微信openId
+  */
+  getOpenId (data) {
+    return fetch('post', '/api/getOpenid', data)
+  },
+  /*
+  *获取微信pay
+  */
+  wxPay (data) {
+    return fetch('post', '/api/pay', data)
   }
+
 }

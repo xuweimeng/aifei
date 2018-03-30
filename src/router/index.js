@@ -17,15 +17,21 @@ const collection = () => import('@/view/collection/collection')
 const modifyNickname = () => import('@/view/myAccount/modifyNickname/modifyNickname')
 const powerDetails = () => import('@/view/nearPower/powerDetails/powerDetails')
 const pay = () => import('@/view/nearPower/pay/pay')
+const paySuccess = () => import('@/view/nearPower/pay/paySuccess')
 const chargeNum = () => import('@/view/charge/chargeNum/chargeNum')
 
 export default new Router({
+  mode: 'history',
+  // base: '/app/',
   routes: [
+    {
+      path: '/',
+      redirect: '/powerDetails'
+    },
     {
       path: '/list',
       component: List,
-      name: 'List'
-      // redirect: 'list'
+      meta: { title: '首页' }
     },
     {
       path: '/myAccount',
@@ -35,7 +41,8 @@ export default new Router({
         {
           path: 'modifyNickname',
           component: modifyNickname,
-          name: 'modifyNickname'
+          name: 'modifyNickname',
+          meta: { title: '修改密码' }
         }
       ]
     },
@@ -46,7 +53,8 @@ export default new Router({
       children: [{
         path: 'chargeNum',
         component: chargeNum,
-        name: 'chargeNum'
+        name: 'chargeNum',
+        meta: { title: '充值' }
       }]
     },
     {
@@ -107,11 +115,19 @@ export default new Router({
       path: '/powerDetails',
       component: powerDetails,
       name: 'powerDetails',
+      meta: { title: '充电信息' },
       children: [
         {
-          path: 'pay',
+          path: 'pay/:id',
           component: pay,
-          name: 'pay'
+          name: 'pay',
+          meta: { title: '充电' }
+        },
+        {
+          path: 'paySuccess',
+          component: paySuccess,
+          name: 'paySuccess',
+          meta: { title: '支付成功' }
         }
       ]
     }

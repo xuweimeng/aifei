@@ -35,6 +35,7 @@ export default {
 
   .charge {
     background: #fff;
+    .wh(100%, 100%);
     .yue {
       margin: auto;
       padding-top: 4rem; 

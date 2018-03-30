@@ -1,34 +1,21 @@
 <template>
 <div class="my" v-if="isUser">
   <!-- 头部 -->
-  <info-header></info-header>
+  <info-header :user-img="headImgUrl" :user-phone="phonenum" :user-name="nickname"></info-header>
   <!-- 功能列表 -->
   <group>
-    <router-link tag="div" class="tab-item" to="/myAccount">
-      <cell title="我的账号" value="" class="beforeLine" is-link>
+    <router-link tag="div" class="tab-item" :to="{ path: '/myAccount', query: { userName: nickname,userPhone: phonenum, imgUrl: headImgUrl}}">
+      <cell title="我的账号" value="" class="beforeLine" is-link >
         <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe779;</i>
       </cell>
       <cell-box style="padding: 0;"></cell-box>
     </router-link>
     <router-link tag="div" class="tab-item" to="/charge">
-      <cell title="我要充值" value="0.00（元）" is-link class="tab-link">
+      <cell title="我要充值" :value="`${myMoney}元`" is-link class="tab-link">
         <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe783;</i>
       </cell>
     </router-link>
   </group>
-  <!-- <group>
-    <router-link tag="div" class="tab-item" to="/recharge">
-      <cell title="电卡充值" value="" class="beforeLine" is-link>
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a0;</i>
-      </cell>
-      <cell-box style="padding: 0;"></cell-box>
-    </router-link>
-    <router-link tag="div" class="tab-item" to="/buyCard">
-      <cell title="在线购卡" value="0.00（元）" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe791;</i>
-      </cell>
-    </router-link>
-  </group> -->
   <group>
     <router-link tag="div" class="tab-item" to="/myAccount">
       <cell title="电卡充值" value="提供在线充卡服务" class="beforeLine" is-link>
@@ -75,24 +62,19 @@
        <cell-box style="padding: 0;"></cell-box>
     </router-link>
     <router-link tag="div" class="tab-item" to="/collection">
-      <cell title="我的收藏" value="" is-link class="tab-link">
+      <cell title="常见故障" value="" is-link class="tab-link">
         <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a0;</i>
       </cell>
     </router-link>
   </group>
-  <!-- <router-link tag="div" class="tab-item" to="/charge">
-    <span class="tab-link">运营商管理</span>
-  </router-link>
-  <router-link tag="div" class="tab-item" to="/userPage">
-    <span class="tab-link">代理加盟</span>
-  </router-link> -->
-
 </div>
 </template>
 
 <script>
 import infoHeader from '@/view/infoHeader/infoHeader'
 import { Group, Cell, CellBox } from 'vux'
+import { API } from '../../serve/index'
+
 export default {
   created () {
   },
@@ -107,7 +89,33 @@ export default {
       return this.$route.path.match('list') ? this.$route.path.match('list').length : ''
     }
   },
+  data () {
+    return {
+      nickname: '赵中偶', // 用户名
+      headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEIHVqmlIwoRSqlBQU2kyXibgRjjbqQUgVXcCLQL1mp8Mof7lcK46cC8wpBmrOlblibPJibDH2FdJoh1w/132', // 用户头像
+      myMoney: '1000000.00', // 用户余额
+      phonenum: '17681868101' // 用户手机号
+    }
+  },
+  mounted () {
+  },
   methods: {
+    getMyInfo () {
+      API.powerDetails.getmyinfo({
+        'code': 'oyRTo0Q3d9FhSq9HbzfisWKG2AfI'
+      }).then((res) => {
+        console.log(res)
+        if (res.code === 0) {
+          this.openId = res.data.openid
+          this.nickname = res.data.nickname
+          this.headImgUrl = res.data.headImgUrl
+          this.myMoney = res.data.myMoney
+          console.log(this.powerNumber)
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
   }
 }
 </script>

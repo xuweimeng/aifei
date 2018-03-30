@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <!-- <loading v-model="isLoading"></loading> -->
+    <!-- <list></list> -->
     <transition name="slide2">
       <router-view></router-view>
     </transition>
@@ -11,14 +12,14 @@
 
 import { Loading } from 'vux'
 // import { mapState } from 'vuex'
-import chargeMeal from '@/view/chargeMeal/chargeMeal'
+import List from '@/view/list/list'
 import infoHeader from '@/view/infoHeader/infoHeader'
 
 export default {
   name: 'app',
   components: {
     Loading,
-    chargeMeal,
+    List,
     infoHeader
   },
   computed: {

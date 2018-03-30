@@ -8,7 +8,7 @@
         <cell-box style="padding: 0;" class="cellBox"></cell-box>
       </router-link>
       <router-link tag="div" class="tab-item" to="/myAccount/modifyNickname">
-        <cell title="名字" value="Xxu" is-link class="tab-link">
+        <cell title="名字" :value="`${nickname}3`" is-link class="tab-link">
         </cell>
         <cell-box style="padding: 0;"></cell-box>
       </router-link>
@@ -24,9 +24,9 @@
         <cell-box style="padding: 0;"></cell-box>
       </router-link>
     </group>
-    <transition name="slide">
+    <!-- <transition name="slide"> -->
       <router-view></router-view>
-    </transition>
+    <!-- </transition> -->
   </div>
 </template>
 
@@ -39,6 +39,25 @@ export default {
     Group,
     Cell,
     CellBox
+  },
+  data () {
+    return {
+      nickname: '', // 用户名
+      imgUrl: '', // 用户余额
+      userPhone: '' // 用户手机号
+    }
+  },
+  computed: {
+    nickname: function () {
+      return this.$route.query.userName
+    },
+    userPhone: function () {
+      return this.$route.query.userPhone
+    },
+    imgUrl: function () {
+      return this.$route.query.imgUrl
+    }
+
   },
   methods: {
   }

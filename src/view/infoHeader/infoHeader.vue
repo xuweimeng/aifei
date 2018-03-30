@@ -1,18 +1,26 @@
 <template>
   <div class="infoHeader">
     <div class="pic left">
-      <img src="../../assets/user/userPic.jpg" alt="">
+      <img :src='userImg' alt="">
     </div>
     <div class="username left">
-      <div class="name">Xxu</div>
-      <div class="mobile">17681868102</div>
+      <div class="name">{{userName}}</div>
+      <div class="mobile">{{userPhone}}</div>
     </div>
-    
   </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+    }
+  },
+  props: [
+    'userImg',
+    'userName',
+    'userPhone'
+  ]
 }
 </script>
 
