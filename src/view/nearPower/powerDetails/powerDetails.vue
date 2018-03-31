@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { Flexbox, FlexboxItem, Divider, Search, XButton, Grid, GridItem, Alert } from 'vux'
+import { Flexbox, FlexboxItem, Divider, Search, XButton, Grid, GridItem, Alert, cookie } from 'vux'
 import { API } from '../../../serve/index'
 // import getQueryString from '../../../config/getUrl'
 // import { mapMutations } from 'vuex'
@@ -105,8 +105,10 @@ export default {
   methods: {
     /** 获取当前二维码的电桩信息 **/
     getCode () {
+      console.log(this.$store.state)
       // let code = this.$store.state.vux.code
-      let deviceCode = this.$store.state.vux.deviceCode
+      // let deviceCode = this.$store.state.vux.deviceCode
+      let deviceCode = cookie.get('deviceCode')
       // this.$store.commit('deviceCodeMua', {
       //   deviceCode: deviceCode
       // })
@@ -131,7 +133,7 @@ export default {
     /** 获取当前用户的信息 **/
     getMyInfo () {
       API.powerDetails.getmyinfo({
-        'code': this.$store.state.vux.code
+        'code': cookie.get('code')
       }).then((res) => {
         if (res.code === 0) {
           this.$store.dispatch('acbalance', res.data)

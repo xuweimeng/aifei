@@ -23,7 +23,8 @@
 </template>
 
 <script>
-import { XButton, Checker, CheckerItem } from 'vux'
+import { XButton, Checker, CheckerItem, cookie } from 'vux'
+import { API } from '../../../serve/index'
 export default {
   components: {
     XButton,
@@ -32,17 +33,77 @@ export default {
   },
   data () {
     return {
-      defaultChecker: 1// 默认选中的checker
+      defaultChecker: 1, // 默认选中的checker
+      checkMoney: 5, // 充值面值
+      openid: '' // openid
     }
+  },
+  mounted () {
+    this.getOpenId()
   },
   methods: {
     /** 立即充值 **/
     goChargeBtn () {
-
+      this.createOrdeCz()
+    },
+    /** 获取openid **/
+    getOpenId () {
+      API.powerDetails.getOpenId({
+        'code': cookie.get('code')
+      }).then((res) => {
+        if (res.code === 0) {
+          this.openid = res.data
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
     },
     /** 选择1元，2元，3元，4元 **/
     onItemClick2 (index) {
-      console.log(index)
+      switch (index) {
+        case 1:
+          this.checkMoney = 5
+          break
+        case 2:
+          this.checkMoney = 10
+          break
+        case 3:
+          this.checkMoney = 30
+          break
+        case 4:
+          this.checkMoney = 50
+          break
+        case 5:
+          this.checkMoney = 100
+          break
+        case 6:
+          this.checkMoney = 200
+          break
+        case 7:
+          this.checkMoney = 300
+          break
+        default:
+          this.checkMoney = 5
+      }
+      console.log('this.checkMoney=', this.checkMoney)
+    },
+    /** 创建订单 **/
+    createOrdeCz () {
+      API.powerDetails.createOrdeCz({
+        'openid': this.openid, // 设备的code
+        'chargeType': 3, // 按时按量首位
+        'money': 0.01
+      }).then((res) => {
+        if (res.code === 0) {
+          let url = 'http://www.mehuabei.com/api/paycz?money=' + 0.01
+          let state = res.orderNum
+          let weixinUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0ed984de0f8d5972&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo&state=' + state + '#wechat_redirect'
+          console.log(weixinUrl)
+          window.location.href = weixinUrl
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }
@@ -84,7 +145,7 @@ export default {
   .demo4-item {
     margin-top: .4rem;
     padding: .3rem 0;
-    width: 4.6rem;
+    width: 4.5rem;
     color: #999;
     font-size: .7rem;
     background: #fff;

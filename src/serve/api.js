@@ -100,6 +100,12 @@ export const powerDetails = {
   */
   wxPay (data) {
     return fetch('post', '/api/pay', data)
+  },
+  /*
+  *微信充值
+  */
+  createOrdeCz (data) {
+    return fetch('post', '/api/createOrdeCz', data)
   }
 
 }

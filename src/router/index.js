@@ -26,7 +26,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/powerDetails'
+      // redirect: '/powerDetails'
+      component: List
     },
     {
       path: '/list',
