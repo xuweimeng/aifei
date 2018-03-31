@@ -30,10 +30,10 @@
           v-model="defaultChecker"
           default-item-class="demo4-item"
           selected-item-class="demo4-item-selected">
-            <checker-item 
+            <checker-item
             v-for="(item, index) in chargeTypeList"
-            :key="item.id" 
-            :value="index+1" 
+            :key="item.id"
+            :value="index+1"
             @on-item-click="onItemClick2(item)">{{item.chargeName}}</checker-item>
           </checker>
         </div>
@@ -73,11 +73,13 @@
         </div>
       </div>
     </div>
+    <!-- 创建订单弹框 -->
+    <alert v-model="showOrder" :title="提示">{{showOrderTxt}}</alert>
   </div>
 </template>
 
 <script>
-import { Divider, Flexbox, FlexboxItem, Tab, TabItem, XButton, CheckIcon, Checklist, Checker, CheckerItem, cookie } from 'vux'
+import { Divider, Flexbox, FlexboxItem, Tab, TabItem, XButton, CheckIcon, Checklist, Checker, CheckerItem, Alert } from 'vux'
 import { API } from '../../../serve/index'
 // import '../../../config/jweixin-1.2.0'
 export default {
@@ -91,7 +93,8 @@ export default {
     CheckIcon,
     Checklist,
     CheckerItem,
-    Checker
+    Checker,
+    Alert
   },
   data () {
     return {
@@ -124,18 +127,21 @@ export default {
       btnInfo: { // 按时收费的id, chargeCode
         id: '',
         chargeCode: ''
-      }
+      },
+      openid: '', // 微信openid
+      showOrder: false, // 是否支持按时或按量充电
+      showOrderTxt: '', // 提示文本
+      itemMoney: '' // 选择充值的金额
     }
   },
   computed: {
   },
   mounted () {
     this.getPayInfo()
+    // this.getOpenId()
     // this.$nextTick(function () {
     this.getConfig()
     // })
-    alert(cookie.get('code'))
-    this.getOpenId()
   },
   methods: {
     /** 插口号详情 **/
@@ -143,7 +149,7 @@ export default {
       // 插口号
       this.Portnum = this.$route.params.id
       this.deviceCode = this.$route.query.deviceCode
-      this.code = this.$route.query.code
+      this.openid = this.$route.query.openid
       // 账户余额
       let balance = this.$store.state.vux.balance
       // console.log(this.$store.state.vux.balance)
@@ -154,14 +160,12 @@ export default {
         'Portnum': this.Portnum
       }).then((res) => {
         if (res.code === 0) {
-          console.log('test-------------------------156')
-          console.log(res)
-          this.openId = res.data.openid
           this.deviceinfoEntity = res.data.deviceinfoEntity
           this.chargeTypeList = res.data.chargeTypeList
           // 默认赋值选择的金额
           this.btnInfo.id = this.chargeTypeList[0].id
           this.btnInfo.chargeCode = this.chargeTypeList[0].chargeCode
+          this.itemMoney = this.chargeTypeList[0].money // 默认充值金额
         }
       }).catch((error) => {
         console.log(error)
@@ -173,22 +177,27 @@ export default {
     },
     /** 开始充电 **/
     startElerc () {
-      console.log(this.tabIndex)
-      // 按时收费
       if (this.tabIndex === '1') {
         if (this.deviceinfoEntity.chargetype === '2' || this.deviceinfoEntity.chargetype === '3') {
           this.createOrderFun()
+        } else {
+          this.showOrder = true
+          this.showOrderTxt = '暂时不支持按量充电'
         }
-      } else if (this.tabIndex === '2') { // 按量收费
+      } else if (this.tabIndex === '2') {
         if (this.deviceinfoEntity.chargetype === '1' || this.deviceinfoEntity.chargetype === '3') {
           this.createOrderFun()
+        } else {
+          this.showOrder = true
+          this.showOrderTxt = '暂时不支持按时充电'
         }
       }
+      // 按时收费
     },
     /** 创建订单 **/
     createOrderFun () {
       API.powerDetails.createOrder({
-        'code': this.$route.query.code, // 设备的code
+        'openid': this.openid, // 设备的code
         'Portnum': this.Portnum, // 插座好
         'chargeTypeId': this.btnInfo.id, // --------------------
         'deviceId': this.deviceinfoEntity.id, // 设备的id
@@ -197,6 +206,11 @@ export default {
         'chargeCode': this.btnInfo.chargeCode
       }).then((res) => {
         if (res.code === 0) {
+          let url = 'http://www.mehuabei.com/api/paycz?money=' + this.itemMoney
+          let state = res.orderNum
+          let weixinUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0ed984de0f8d5972&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo&state=' + state + '#wechat_redirect'
+          console.log(weixinUrl)
+          window.location.href = weixinUrl
         }
       }).catch((error) => {
         console.log(error)
@@ -218,20 +232,22 @@ export default {
     },
     /** 选择1元，2元，3元，4元 **/
     onItemClick2 (item) {
+      console.log(item)
+      this.itemMoney = item.money
       this.btnInfo.id = item.id
       this.btnInfo.chargeCode = item.chargecode
     },
     /** 获取微信openid **/
-    getOpenId () {
-      API.powerDetails.getOpenId({
-        'code': this.code
-      }).then((res) => {
-        console.log(res)
-        this.wxPay(res.data)
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
+    // getOpenId () {
+    //   API.powerDetails.getOpenId({
+    //     'code': this.code
+    //   }).then((res) => {
+    //     console.log(res)
+    //     this.openid = res.data
+    //   }).catch((error) => {
+    //     console.log(error)
+    //   })
+    // },
     /** 获取微信jssdk配置信息 **/
     getConfig () {
       let url = location.href.split('#')[0] // 获取锚点之前的链接
@@ -239,9 +255,6 @@ export default {
         'rurl': url
       }).then((res) => {
         console.log(res)
-        // cookie.set('openId', res.data.openid)
-        // alert('oppenid=' + res.data.openid)
-        
       }).catch((error) => {
         console.log(error)
       })
@@ -261,56 +274,56 @@ export default {
     },
     weixinPay (data) {
       console.log('test--------------pay的data')
-      pay(data)
-      function pay () {
-        if (typeof WeixinJSBridge === 'undefined') {
-          if (document.addEventListener) {
-            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false)
-          } else if (document.attachEvent) {
-            document.attachEvent('WeixinJSBridgeReady', onBridgeReady)
-            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady)
-          }
-        } else {
-          onBridgeReady(data)
-        }
-      }
-      function onBridgeReady (data) {
-        console.log('test--------------pay的data')
-        WeixinJSBridge.invoke(
-          'getBrandWCPayRequest', {
-            'appId': data.appid, // 公众号名称，由商户传入
-            'timeStamp': data.timeStamp, // 时间戳，自1970年以来的秒数
-            'nonceStr': data.nonceStr, // 随机串
-            'package': data.packageValue,
-            'signType': 'MD5', // 微信签名方式
-            'paySign': data.paySign // 微信签名
-          }, function (res) {
-            if (res.err_msg === 'get_brand_wcpay_request:ok') {
-              alert('微信支付成功!')
-            } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-              alert('用户取消支付!')
-            } else {
-              alert('支付失败!')
-            }
-          })
-      }
+      // pay(data)
+      // function pay () {
+      //   if (typeof WeixinJSBridge === 'undefined') {
+      //     if (document.addEventListener) {
+      //       document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false)
+      //     } else if (document.attachEvent) {
+      //       document.attachEvent('WeixinJSBridgeReady', onBridgeReady)
+      //       document.attachEvent('onWeixinJSBridgeReady', onBridgeReady)
+      //     }
+      //   } else {
+      //     onBridgeReady(data)
+      //   }
+      // }
+      // function onBridgeReady (data) {
+      //   console.log('test--------------pay的data')
+      //   WeixinJSBridge.invoke(
+      //     'getBrandWCPayRequest', {
+      //       'appId': data.appid, // 公众号名称，由商户传入
+      //       'timeStamp': data.timeStamp, // 时间戳，自1970年以来的秒数
+      //       'nonceStr': data.nonceStr, // 随机串
+      //       'package': data.packageValue,
+      //       'signType': 'MD5', // 微信签名方式
+      //       'paySign': data.paySign // 微信签名
+      //     }, function (res) {
+      //       if (res.err_msg === 'get_brand_wcpay_request:ok') {
+      //         alert('微信支付成功!')
+      //       } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+      //         alert('用户取消支付!')
+      //       } else {
+      //         alert('支付失败!')
+      //       }
+      //     })
+      // }
     },
     /** 微信支付 **/
     weixinFun (res) {
       // res = eval('('+res+')')
-      res = JSON.parse(res)
-      this.$wechat.config({
-        debug: true,
-        appId: res.appId, // wx0ed984de0f8d5972
-        timestamp: res.timestamp,
-        nonceStr: res.nonceStr,
-        signature: res.signature,
-        jsApiList: [
-          'chooseWXPay',
-          'getNetworkType',
-          'chooseImage'
-        ]
-      })
+      // res = JSON.parse(res)
+      // this.$wechat.config({
+      //   debug: true,
+      //   appId: res.appId, // wx0ed984de0f8d5972
+      //   timestamp: res.timestamp,
+      //   nonceStr: res.nonceStr,
+      //   signature: res.signature,
+      //   jsApiList: [
+      //     'chooseWXPay',
+      //     'getNetworkType',
+      //     'chooseImage'
+      //   ]
+      // })
       // 通过ready接口处理成功验证
       // this.$wechat.ready(function () {
       //   console.log(this.$wechat)
@@ -335,9 +348,9 @@ export default {
       //   })
       // })
       // 错误挫力
-      this.$wechat.error(function (res) {
-        console.log(res)
-      })
+      // this.$wechat.error(function (res) {
+      //   console.log(res)
+      // })
     }
 
   },

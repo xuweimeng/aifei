@@ -51,16 +51,16 @@
       <div>
         <alert v-model="show" title="" @on-show="onShow" @on-hide="onHide"> {{showText}} </alert>
       </div>
-   
+
     <router-view></router-view>
 
   </div>
 </template>
 
 <script>
-import { Flexbox, FlexboxItem, Divider, Search, XButton, Grid, GridItem, Alert, cookie } from 'vux'
+import { Flexbox, FlexboxItem, Divider, Search, XButton, Grid, GridItem, Alert } from 'vux'
 import { API } from '../../../serve/index'
-import getQueryString from '../../../config/getUrl'
+// import getQueryString from '../../../config/getUrl'
 // import { mapMutations } from 'vuex'
 
 export default {
@@ -105,21 +105,24 @@ export default {
   methods: {
     /** 获取当前二维码的电桩信息 **/
     getCode () {
-      let code = getQueryString('code')
-      let deviceCode = getQueryString('deviceCode')
-      this.$store.commit('deviceCodeMua', {
-        deviceCode: deviceCode
-      })
+      // let code = this.$store.state.vux.code
+      let deviceCode = this.$store.state.vux.deviceCode
+      // this.$store.commit('deviceCodeMua', {
+      //   deviceCode: deviceCode
+      // })
+      // this.$store.commit('CodeMua', {
+      //   code: code
+      // })
       API.powerDetails.getDeviceInfo({
-        'deviceCode': deviceCode,
-        'code': code
+        'deviceCode': deviceCode
+        // 'code': code
       }).then((res) => {
         if (res.code === 0) {
-          this.openId = res.data.openid
+          // this.openId = res.data.openid
           this.powerMessage = res.data.deviceinfoEntity
           this.powerNumber = res.data.portEntityList
           // 在getDeviceInfo接口获得微信的oppenId，存储到cookie
-          cookie.set('code', '22222')
+          // cookie.set('code', '22222')
         }
       }).catch((error) => {
         console.log(error)
@@ -128,10 +131,11 @@ export default {
     /** 获取当前用户的信息 **/
     getMyInfo () {
       API.powerDetails.getmyinfo({
-        'code': 'oyRTo0Q3d9FhSq9HbzfisWKG2AfI'
+        'code': this.$store.state.vux.code
       }).then((res) => {
         if (res.code === 0) {
           this.$store.dispatch('acbalance', res.data)
+          this.openId = res.data.openId
         }
       }).catch((error) => {
         console.log(error)
@@ -146,7 +150,10 @@ export default {
         this.show = true
         this.showText = '提示：该插孔正在充电中'
       } else if (info === '1') {
-        this.$router.push({path: `/powerDetails/pay/${val + 1}`, query: { code: this.$route.query.code, deviceCode: this.$route.query.code }})
+        this.$router.push(
+          {path: `/powerDetails/pay/${val + 1}`,
+            query: { openid: this.openId, deviceCode: this.$store.state.vux.deviceCode }}
+        )
       }
     },
     // 弹框关闭显示的自定义事件
@@ -172,6 +179,7 @@ export default {
     right: 0;
     z-index: 100;
     background: #FBF9FE;
+    overflow-y: auto;
     /**充电机位置**/
     .powerInfo {
       margin-bottom: 0.5rem;
@@ -247,7 +255,7 @@ export default {
           height: 2rem;
           bottom: 0.35rem;
           left: -0.16rem;
-          
+
         }
         .lines2 {
           width: .25rem;

@@ -5,7 +5,7 @@ Vue.use(Router)
 
 const List = () => import('@/view/list/list')
 const myAccount = () => import('@/view/myAccount/myAccount')
-const charge = () => import('@/view/charge/charge')
+// const charge = () => import('@/view/charge/charge')
 const recharge = () => import('@/view/recharge/recharge')
 const buyCard = () => import('@/view/buyCard/buyCard')
 const cardBind = () => import('@/view/cardBind/cardBind')
@@ -47,15 +47,16 @@ export default new Router({
       ]
     },
     {
-      path: '/charge',
-      component: charge,
-      name: 'charge',
-      children: [{
-        path: 'chargeNum',
-        component: chargeNum,
-        name: 'chargeNum',
-        meta: { title: '充值' }
-      }]
+      path: '/chargeNum',
+      component: chargeNum,
+      name: 'chargeNum',
+      meta: { title: '充值' }
+      // children: [{
+      //   path: 'chargeNum',
+      //   component: chargeNum,
+      //   name: 'chargeNum',
+      //   meta: { title: '充值' }
+      // }]
     },
     {
       path: '/recharge',

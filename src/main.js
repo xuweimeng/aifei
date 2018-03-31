@@ -7,6 +7,8 @@ import { WechatPlugin, AjaxPlugin } from 'vux'
 import store from './store'
 import './config/rem'
 import getQueryString from './config/getUrl'
+import getGlobal from 'system.global'
+const global = getGlobal()
 
 Vue.use(AjaxPlugin)
 Vue.use(WechatPlugin)
@@ -17,30 +19,61 @@ FastClick.attach(document.body)
 Vue.config.productionTip = false
 Vue.prototype.getUrl = getQueryString
 
-// console.log(Vue.wechat)
+global.browserQuery = {
+  code: getQueryString('code'),
+  deviceCode: getQueryString('deviceCode'),
+  page: getQueryString('page')
+}
+// router.beforeEach(function (to, from, next) {
+//   console.log('deviceCode=' + global.browserQuery.deviceCode)
+//   console.log('code=' + global.browserQuery.code)
+//   if (global.browserQuery.deviceCode && global.browserQuery.code) {
+//     console.log('我是router.beforeEach')
+//     store.dispatch('acdeviceCode', {
+//       deviceCode: global.browserQuery.deviceCode
+//     })
+//     store.dispatch('acCode', {
+//       code: global.browserQuery.code
+//     })
+//     delete global.browserQuery.deviceCode
+//     if (to.meta.title) {
+//       document.title = to.meta.title
+//     }
+//     store.commit('updateLoadingStatus', { isLoading: true })
+//     console.log(global.browserQuery.page)
+//     next('/')
+//   }
+// })
 router.beforeEach(function (to, from, next) {
-  // 获取当前的url后面的参数
-  let deviceCode = getQueryString('deviceCode')
-  let code = getQueryString('code')
-
+  console.log('deviceCode=' + global.browserQuery.deviceCode)
+  console.log('code=' + global.browserQuery.code)
+  // if (global.browserQuery.deviceCode && global.browserQuery.code) {
+  console.log('我是router.beforeEach')
   store.dispatch('acdeviceCode', {
-    deviceCode: deviceCode
+    deviceCode: global.browserQuery.deviceCode
   })
   store.dispatch('acCode', {
-    code: code
+    code: global.browserQuery.code
   })
-  // location.href = window.location.href.split('/')[3]
-  // 为每个页面添加一个title
+  // delete global.browserQuery.deviceCode
   if (to.meta.title) {
     document.title = to.meta.title
   }
   store.commit('updateLoadingStatus', { isLoading: true })
+  console.log(global.browserQuery.page)
   next()
+  // }
 })
 
-router.afterEach(function (to) {
-  store.commit('updateLoadingStatus', { isLoading: false })
-})
+// router.afterEach(function (to) {
+//   console.log('我是router.afterEach')
+//   store.commit('updateLoadingStatus', { isLoading: false })
+//   if (global.browserQuery.page) {
+//     let p = global.browserQuery.page
+//     global.browserQuery = {}
+//     router.push(p)
+//   }
+// })
 
 /* eslint-disable no-new */
 new Vue({
