@@ -33,18 +33,27 @@ export default {
   },
   data () {
     return {
-      defaultChecker: 1, // 默认选中的checker
+      defaultChecker: 5, // 默认选中的checker
       checkMoney: 5, // 充值面值
       openid: '' // openid
     }
   },
   mounted () {
-    this.getOpenId()
+    this.isOpenid()
   },
   methods: {
     /** 立即充值 **/
     goChargeBtn () {
       this.createOrdeCz()
+    },
+    /** 如果从路由获取到openid，那么久不需要从接口获取了 **/
+    isOpenid () {
+      let getopenid = this.$route.query.openid
+      if (getopenid) {
+        this.openid = getopenid
+      } else {
+        this.getOpenId()
+      }
     },
     /** 获取openid **/
     getOpenId () {

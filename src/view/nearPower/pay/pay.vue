@@ -9,7 +9,6 @@
         </flexbox-item>
         <flexbox-item :span="3/5" class="czDz">
           <p class="czText1">{{deviceinfoEntity.adressdetail}}</p>
-          <!-- <p class="czText2"><i class="iconfont">&#xe797;</i>海创路杭州捷瑞达科创路南79米</p> -->
           <p class="czText2"><i class="iconfont">&#xe797;</i>设备编号：{{deviceinfoEntity.devicenum}}</p>
           <p class="czText2"><i class="iconfont">&#xe797;</i>插座编号：{{Portnum}}</p>
         </flexbox-item>
@@ -49,10 +48,10 @@
           </flexbox>
           <p>收费标准（按量收费）</p>
           <flexbox v-if="deviceinfoEntity.chargetype==1 || deviceinfoEntity.chargetype==3">
-            <flexbox-item><p>0~100瓦</p><p>0.4元/小时</p></flexbox-item>
-            <flexbox-item><p>100~200瓦</p><p>0.5元/小时</p></flexbox-item>
-            <flexbox-item><p>200~400瓦</p><p>0.6元/小时</p></flexbox-item>
-            <flexbox-item><p>400~600瓦</p><p>0.8元/小时</p></flexbox-item>
+            <flexbox-item
+            v-for="(item, index) in chargeTypeList1"
+            :key="item.id"
+            ><p>{{item.minw}}~{{item.maxw}}瓦</p><p>{{item.chargeName}}</p></flexbox-item>
           </flexbox>
           <flexbox v-if="deviceinfoEntity.chargetype==2">
             <flexbox-item><p style="color: #f00"><strong>暂时不支持充满</strong></p></flexbox-item>
@@ -121,6 +120,7 @@ export default {
         chargetype: '' // 2:按时，1：按量，3，按时+按量
       },
       chargeTypeList: [], // 按时收费金额
+      chargeTypeList1: [], // 按量收费金额
       deviceCode: '', // 电桩号
       code: '', // 公众号code
       payType: '', // 支付方式1:余额支付  2：微信支付
@@ -161,7 +161,14 @@ export default {
       }).then((res) => {
         if (res.code === 0) {
           this.deviceinfoEntity = res.data.deviceinfoEntity
-          this.chargeTypeList = res.data.chargeTypeList
+          // this.chargeTypeList = res.data.chargeTypeList
+          res.data.chargeTypeList.forEach(item => {
+            if (item.type === 1) {
+              this.chargeTypeList.push(item)
+            } else {
+              this.chargeTypeList1.push(item)
+            }
+          })
           // 默认赋值选择的金额
           this.btnInfo.id = this.chargeTypeList[0].id
           this.btnInfo.chargeCode = this.chargeTypeList[0].chargeCode
@@ -197,7 +204,7 @@ export default {
     /** 创建订单 **/
     createOrderFun () {
       API.powerDetails.createOrder({
-        'openid': this.openid, // 设备的code
+        'openid': this.openid, // 设备的openid
         'Portnum': this.Portnum, // 插座好
         'chargeTypeId': this.btnInfo.id, // --------------------
         'deviceId': this.deviceinfoEntity.id, // 设备的id
@@ -232,7 +239,6 @@ export default {
     },
     /** 选择1元，2元，3元，4元 **/
     onItemClick2 (item) {
-      console.log(item)
       this.itemMoney = item.money
       this.btnInfo.id = item.id
       this.btnInfo.chargeCode = item.chargecode

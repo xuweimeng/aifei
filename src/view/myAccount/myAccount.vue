@@ -9,23 +9,30 @@
         </cell>
         <cell-box style="padding: 0;" class="cellBox"></cell-box>
       </router-link>
-      <router-link tag="div" class="tab-item">
+      <router-link tag="div" class="tab-item" to="">
       <!-- <router-link tag="div" class="tab-item" to="/myAccount/modifyNickname"> -->
-        <cell title="名字" :value="nickname" is-link class="tab-link">
+        <cell title="名字" :value="`${nickname}`" is-link class="tab-link">
         </cell>
         <cell-box style="padding: 0;"></cell-box>
       </router-link>
-      <!-- <router-link tag="div" class="tab-item" to="/charge">
-        <cell title="充电卡号" value="" class="tab-link">
+      <router-link tag="div" class="tab-item" to="">
+      <!-- <router-link tag="div" class="tab-item" to="/myAccount/modifyNickname"> -->
+        <cell title="余额" :value="`${myMoney}`" is-link class="tab-link">
         </cell>
-      </router-link> -->
+        <cell-box style="padding: 0;"></cell-box>
+      </router-link>
     </group>
     <group>
-      <router-link tag="div" class="tab-item" to="/myAccount">
-        <cell title="修改手机号" :value="userPhone" class="beforeLine" is-link>
+      <router-link tag="div" class="tab-item" :to="{ path: '/chargeNum', query: { openid: openid }}">
+        <cell title="去充值"  class="beforeLine" is-link>
         </cell>
         <cell-box style="padding: 0;"></cell-box>
       </router-link>
+      <!-- <router-link tag="div" class="tab-item" to="">
+        <cell title="修改手机号" :value="`${userPhone}`" class="beforeLine" is-link>
+        </cell>
+        <cell-box style="padding: 0;"></cell-box>
+      </router-link> -->
     </group>
     <!-- <transition name="slide"> -->
       <router-view></router-view>
@@ -34,12 +41,10 @@
 </template>
 
 <script>
-import infoHeader from '@/view/infoHeader/infoHeader'
 import { Group, Cell, CellBox, cookie } from 'vux'
 import { API } from '../../serve/index'
 export default {
   components: {
-    infoHeader,
     Group,
     Cell,
     CellBox
@@ -49,13 +54,14 @@ export default {
       nickname: '', // 用户名
       headImgUrl: '', // 用户余额
       myMoney: '', // 用户余额
-      userPhone: '' // 用户手机号
+      openid: '' // openid
     }
   },
   mounted () {
     this.getMyInfo()
   },
   methods: {
+
     getMyInfo () {
       API.powerDetails.getmyinfo({
         'code': cookie.get('code')
@@ -65,8 +71,7 @@ export default {
           this.nickname = res.data.nickname
           this.headImgUrl = res.data.headImgUrl
           this.myMoney = res.data.myMoney
-          this.userPhone = res.data.phonenum
-          console.log(this.powerNumber)
+          this.openid = res.data.openId
         }
       }).catch((error) => {
         console.log(error)
