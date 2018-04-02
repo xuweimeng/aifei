@@ -104,6 +104,7 @@ export default {
         'money': 0.01
       }).then((res) => {
         if (res.code === 0) {
+          console.log('hello')
           let url = 'http://www.mehuabei.com/api/paycz?money=' + 0.01
           let state = res.orderNum
           let weixinUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0ed984de0f8d5972&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo&state=' + state + '#wechat_redirect'
