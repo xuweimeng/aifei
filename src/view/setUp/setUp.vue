@@ -1,6 +1,6 @@
 <template>
   <div class="my">
-    我的
+    我是setup
   </div>
 </template>
 
