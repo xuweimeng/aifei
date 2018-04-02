@@ -25,6 +25,7 @@ export default {
     // 充值按钮
     chargeBtn () {
       this.$router.push({path: '/charge/chargeNum'})
+      console.log('test')
     }
   }
 }
