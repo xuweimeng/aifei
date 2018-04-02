@@ -12,7 +12,7 @@ const cardBind = () => import('@/view/cardBind/cardBind')
 const charging = () => import('@/view/charging/charging')
 const chargeRecord = () => import('@/view/chargeRecord/chargeRecord')
 const chargeMeal = () => import('@/view/chargeMeal/chargeMeal')
-// const nearPower = () => import('@/view/nearPower/nearPower')
+const bindMobile = () => import('@/view/bindMobile/bindMobile')
 const collection = () => import('@/view/collection/collection')
 const modifyNickname = () => import('@/view/myAccount/modifyNickname/modifyNickname')
 const powerDetails = () => import('@/view/nearPower/powerDetails/powerDetails')
@@ -63,6 +63,12 @@ export default new Router({
       path: '/recharge',
       component: recharge,
       name: 'recharge'
+    },
+    {
+      path: '/bindMobile',
+      component: bindMobile,
+      name: 'bindMobile',
+      meta: { title: '绑定手机号' }
     },
     {
       path: '/buyCard',

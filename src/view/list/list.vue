@@ -23,8 +23,8 @@
       </cell>
       <cell-box style="padding: 0;"></cell-box>
     </router-link>
-    <router-link tag="div" class="tab-item" to="/charge">
-      <cell title="在线购卡" value="" is-link class="tab-link">
+    <router-link tag="div" class="tab-item" to="/bindMobile">
+      <cell title="绑定手机号" value="" is-link class="tab-link">
         <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a4;</i>
       </cell>
        <cell-box style="padding: 0;"></cell-box>
