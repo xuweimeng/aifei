@@ -28,7 +28,11 @@
         <div class="elekou rel" v-bind:class="[item.info == 3 || item.info == 4?chargeBorder2:chargeBorder1 ]">
           <div class="lines1 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?(useingBackground):item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
           </div>
+          <div class="lines11 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?(useingBackground):item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
+          </div>
           <div class="lines2 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?useingBackground:item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
+          </div>
+          <div class="lines22 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?useingBackground:item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
           </div>
           <div class="text1 abs">
             {{index+1 < 10 ? '0'+(index+1):index+1}}
@@ -250,18 +254,37 @@ export default {
         .wh(2.7rem, 2.7rem);
         border-radius: 0.4rem;
         // border: 1px solid #79a5e4;
+        .lines11 {
+          bottom: 0.35rem;
+          left: -0.16rem;
+          z-index: 100;
+          width: .25rem;
+          height: 2rem;
+          background: #fff;
+          border: 1px solid #79a5e4;
+        }
         .lines1 {
           width: .25rem;
           height: 2rem;
+          z-index: 1000;
           bottom: 0.35rem;
           left: -0.16rem;
-
         }
         .lines2 {
-          width: .25rem;
-          height: 2rem;
           bottom: 0.35rem;
           right: -0.18rem;
+          z-index: 1000;
+          width: .25rem;
+          height: 2rem;
+        }
+        .lines22 {
+          bottom: 0.35rem;
+          right: -0.18rem;
+          z-index: 100;
+          width: .25rem;
+          height: 2rem;
+          background: #fff;
+          border: 1px solid #79a5e4;
         }
         .text1 {
           .wh (1.5rem, 1rem);

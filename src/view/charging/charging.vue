@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { Group, Flexbox, FlexboxItem } from 'vux'
+import { Group, Flexbox, FlexboxItem, cookie } from 'vux'
 import { API } from '../../serve/index'
 export default {
   components: {
@@ -28,7 +28,8 @@ export default {
   },
   data () {
     return {
-      recordList: [] // 充值历史
+      recordList: [], // 充值历史
+      openid: '' // openid
     }
   },
   mounted () {
@@ -39,7 +40,7 @@ export default {
     /** 获取微信openid **/
     getOpenId () {
       API.powerDetails.getOpenId({
-        'code': this.code
+        'code': cookie.get('code')
       }).then((res) => {
         console.log(res)
       }).catch((error) => {
@@ -54,7 +55,7 @@ export default {
      */
     getEleRecord () {
       API.powerDetails.getMyChargeListInfo({
-        'openid': 'oyRTo0Q3d9FhSq9HbzfisWKG2AfI',
+        'openid': this.openid,
         'chargetype': '3'
       }).then((res) => {
         if (res.code === 0) {
