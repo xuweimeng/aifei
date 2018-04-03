@@ -1,0 +1,104 @@
+接口:	/api//api/getMyChargeListInfo
+
+参数:	openid
+     	chargetype  查询充值传3  查询充电传0
+
+
+充值的返回值：
+
+	{
+	"code": 0,
+	"data": [{
+		"batterystarttime": "2018-04-01 01:27:58",//时间
+		"portnum": "",
+		"ordernum": "7d19fda6",
+		"ordermoney": 0.01,   //订单金额
+		"deviceaddress": "",
+		"deviceid": "",
+		"userid": "6",
+		"devicecode": "",
+		"paystatus": "1",
+		"chargetypedetail": "",
+		"id": 33,
+		"chargetype": 3,         //代表充值
+		"chargetypeStr": "",
+		"usercode": "",
+		"profitloss": "",
+		"paytype": 1
+	}, {
+		"batterystarttime": "2018-04-01 11:49:26",
+		"portnum": "",
+		"ordernum": "7f52f42f",
+		"ordermoney": 0.01,
+		"deviceaddress": "",
+		"deviceid": "",
+		"userid": "6",
+		"devicecode": "",
+		"paystatus": "2",
+		"chargetypedetail": "",
+		"id": 42,
+		"chargetype": 3,
+		"chargetypeStr": "",
+		"usercode": "",
+		"profitloss": "",
+		"paytype": 1
+	}],
+	"message": "成功"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+充电的返回结果
+{
+	"code": 0,
+	"data": [{
+		"chagetypedetailid": 1,
+		"batterystarttime": "2018-03-22 14:49:53",  //充电时间
+		"portnum": "002",
+		"electricprice": 1.0,   
+		"ordernum": "",
+		"ordermoney": 10.0,   //订单金额
+		"deviceaddress": "福鼎家园御路苑7号楼",   //充电地址
+		"deviceid": "1",
+		"userid": "6",
+		"devicecode": "001",   //设备编号
+		"paystatus": "2",	//端口号
+		"chargetypedetail": "1元/4小时",
+		"id": 1,
+		"chargetype": 1,
+		"chargetypeStr": "",
+		"usercode": "",
+		"profitloss": "0.5",
+		"paytype": 2
+	}, {
+		"chagetypedetailid": 1,
+		"batterystarttime": "2018-03-22 15:06:48",
+		"portnum": "002",
+		"electricprice": 1.0,
+		"ordernum": "",
+		"ordermoney": 10.0,
+		"deviceaddress": "福鼎家园御路苑7号楼",
+		"deviceid": "1",
+		"userid": "6",
+		"devicecode": "001",
+		"paystatus": "2",
+		"chargetypedetail": "1元/4小时",
+		"id": 2,
+		"chargetype": 2,
+		"chargetypeStr": "",
+		"usercode": "",
+		"profitloss": "1",
+		"paytype": 2
+	}],
+	"message": "成功"
+}
