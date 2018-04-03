@@ -1,7 +1,7 @@
 <template>
   <div class="paySuccess fixPosition">
    <div class="successTip">
-     <i class="iconfont">&#xe797;</i>充值成功
+     <i class="iconfont">&#xe641;</i>充值成功
    </div>
    <div class="successInfo">
       <p>充值账号：<span>XXu</span></p>
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../../styles/iconfont.less';
+// @import '../../../styles/iconfont.less';
   .paySuccess {
     .successTip, .iconfont {
       background: #ffF;

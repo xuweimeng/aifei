@@ -4,7 +4,7 @@
     <div class="powerInfo">
       <flexbox class="powerList" @click.native="ToDetails">
         <flexbox-item  class="detailItem">
-          <div class="position"><i class="iconfont">&#xe797;</i>{{ powerMessage?powerMessage.adressdetail : '' }}</div>
+          <div class="position"><i class="iconfont">&#xe77e;</i>{{ powerMessage?powerMessage.adressdetail : '' }}</div>
           <!-- <div class="address">578m|科技大道西部科技园西365米</div> -->
         </flexbox-item>
         <flexbox-item :span="1/8">
@@ -51,9 +51,7 @@
       <div>
         <alert v-model="show" title="" @on-show="onShow" @on-hide="onHide"> {{showText}} </alert>
       </div>
-
-    <router-view></router-view>
-
+      <router-view></router-view>
   </div>
 </template>
 
@@ -171,7 +169,7 @@ export default {
 
 <style lang="less">
 @import '~vux/src/styles/1px.less';
-@import '../../../styles/iconfont.less';
+// @import '../../../styles/iconfont.less';
 @import '../../../styles/mixin.less';
   .powerDetails {
     position: fixed;

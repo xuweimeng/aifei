@@ -83,7 +83,8 @@ export default new Router({
     {
       path: '/charging',
       component: charging,
-      name: 'charging'
+      name: 'charging',
+      meta: { title: '充值记录' }
     },
     {
       path: '/chargeRecord',

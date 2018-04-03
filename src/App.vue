@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <!-- <loading v-model="isLoading"></loading> -->
-    <!-- <list></list> -->
     <transition name="slide2">
       <router-view></router-view>
     </transition>
@@ -34,6 +33,7 @@ export default {
 @import '~vux/src/styles/reset.less';
 @import '~vux/src/styles/1px.less';
 @import 'styles/animate.css';
+// @import 'styles/iconfont.less';
 
 body {
   background-color: #fbf9fe;
@@ -43,7 +43,7 @@ body {
 }
 
 .slide2-enter-active, .slide2-leave-active{
-  transition: all .3s;
+  transition: all .5s;
 }
 .slide2-enter, .slide2-leave-to {
   transform: translate3d(80%, 0, 0)

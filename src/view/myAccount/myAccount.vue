@@ -77,6 +77,12 @@ export default {
         console.log(error)
       })
     }
+  },
+  watch: {
+    $route (to, from) {
+      console.log(from)
+      console.log(to)
+    }
   }
 }
 </script>

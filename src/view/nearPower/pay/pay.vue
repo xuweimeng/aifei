@@ -9,8 +9,8 @@
         </flexbox-item>
         <flexbox-item :span="3/5" class="czDz">
           <p class="czText1">{{deviceinfoEntity.adressdetail}}</p>
-          <p class="czText2"><i class="iconfont">&#xe797;</i>设备编号：{{deviceinfoEntity.devicenum}}</p>
-          <p class="czText2"><i class="iconfont">&#xe797;</i>插座编号：{{Portnum}}</p>
+          <p class="czText2"><i class="iconfont">&#xe613;</i>设备编号：{{deviceinfoEntity.devicenum}}</p>
+          <p class="czText2"><i class="iconfont">&#xe613;</i>插座编号：{{Portnum}}</p>
         </flexbox-item>
         <flexbox-item :span="1/5" class="czXq">
           <div class="problem">?</div>
@@ -140,7 +140,7 @@ export default {
     this.getPayInfo()
     // this.getOpenId()
     // this.$nextTick(function () {
-    this.getConfig()
+    // this.getConfig()
     // })
   },
   methods: {
@@ -255,16 +255,16 @@ export default {
     //   })
     // },
     /** 获取微信jssdk配置信息 **/
-    getConfig () {
-      let url = location.href.split('#')[0] // 获取锚点之前的链接
-      API.powerDetails.config({
-        'rurl': url
-      }).then((res) => {
-        console.log(res)
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
+    // getConfig () {
+    //   let url = location.href.split('#')[0] // 获取锚点之前的链接
+    //   API.powerDetails.config({
+    //     'rurl': url
+    //   }).then((res) => {
+    //     console.log(res)
+    //   }).catch((error) => {
+    //     console.log(error)
+    //   })
+    // },
     /** 获取微信pay **/
     wxPay (test) {
       API.powerDetails.wxPay({
@@ -362,7 +362,7 @@ export default {
   },
   watch: {
     $route (to, from) {
-      this.getConfig()
+      // this.getConfig()
     }
   }
 }
@@ -370,7 +370,7 @@ export default {
 
 <style lang="less">
 @import '../../../styles/mixin.less';
-@import '../../../styles/iconfont.less';
+// @import '../../../styles/iconfont.less';
   .payPage {
     z-index: 110;
     &_over {

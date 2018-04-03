@@ -106,6 +106,13 @@ export const powerDetails = {
   */
   createOrdeCz (data) {
     return fetch('post', '/api/createOrdeCz', data)
+  },
+  /*
+  *充值记录
+  *chargeTypr:0:充电2充值
+  */
+  getMyChargeListInfo (data) {
+    return fetch('post', '/api/getMyChargeListInfo', data)
   }
 
 }

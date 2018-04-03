@@ -10,7 +10,6 @@
     <p class="answer">您好，设备带有充电自停功能，系统检测到您的电池充满了，为了防止过充等安全隐患，社别回停止充电。</p>
     <p class="question">插座拔出了，怎么就断电了呢?</p>
     <p class="answer">设备检测到您的充电器被拔出了，此时插座内依然带电，为了保障您的安全，如在1分钟左右未将插头插回去，该插座会断电。</p>
-    
   </div>
 </template>
 
@@ -25,18 +24,18 @@ export default {
     .question {
       padding: 1.75rem 0 .75rem 1.25rem;
       font-size: .8rem;
-      text-indent: 2.5rem;
+      text-indent: 1.6rem;
       color: #f8ad2d;
       border-bottom: 1px dashed #ddd;
       border-top: 1px solid #ddd;
-      background: url('../../assets/problems/question.png') no-repeat 1.5rem center ;
+      background: url('../../assets/problems/question.png') no-repeat 1rem center ;
     }
     .answer {
       padding: 1.75rem 0 .75rem 2.25rem;
       font-size: .7rem;
-      text-indent: 1.5rem;
+      text-indent: .6rem;
       line-height: 2rem;
-      background: url('../../assets/problems/answer.png') no-repeat 1.5rem 1.8rem;
+      background: url('../../assets/problems/answer.png') no-repeat 1rem 1.8rem;
     }
   }
 </style>

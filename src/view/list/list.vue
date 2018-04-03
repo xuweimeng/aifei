@@ -6,64 +6,64 @@
   <group>
     <router-link tag="div" class="tab-item" :to="{ path: '/myAccount', query: { userName: nickname,userPhone: phonenum, imgUrl: headImgUrl}}">
       <cell title="我的账号" value="" class="beforeLine" is-link >
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe779;</i>
+        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe66c;</i>
       </cell>
       <cell-box style="padding: 0;"></cell-box>
     </router-link>
-    <router-link tag="div" class="tab-item" to="/charge">
+    <router-link tag="div" class="tab-item" to="/chargeNum">
       <cell title="我要充值" :value="`${myMoney}元`" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe783;</i>
-      </cell>
-    </router-link>
-  </group>
-  <group>
-    <router-link tag="div" class="tab-item" to="/myAccount">
-      <cell title="电卡充值" value="提供在线充卡服务" class="beforeLine" is-link>
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe79e;</i>
-      </cell>
-      <cell-box style="padding: 0;"></cell-box>
-    </router-link>
-    <router-link tag="div" class="tab-item" to="/bindMobile">
-      <cell title="绑定手机号" value="" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a4;</i>
-      </cell>
-       <cell-box style="padding: 0;"></cell-box>
-    </router-link>
-    <router-link tag="div" class="tab-item" to="/cardBind">
-      <cell title="电卡绑定" value="绑定电卡享有更多服务" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a7;</i>
+        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe796;</i>
       </cell>
     </router-link>
   </group>
   <group>
     <router-link tag="div" class="tab-item" to="/charging">
+      <cell title="充值记录" value="" class="beforeLine" is-link>
+        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe640;</i>
+      </cell>
+      <cell-box style="padding: 0;"></cell-box>
+    </router-link>
+    <router-link tag="div" class="tab-item" to="/bindMobile">
+      <cell title="绑定手机号" value="" is-link class="tab-link">
+        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe630;</i>
+      </cell>
+       <cell-box style="padding: 0;"></cell-box>
+    </router-link>
+    <!-- <router-link tag="div" class="tab-item" to="/cardBind">
+      <cell title="电卡绑定" value="绑定电卡享有更多服务" is-link class="tab-link">
+        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a7;</i>
+      </cell>
+    </router-link> -->
+  </group>
+  <group>
+    <router-link tag="div" class="tab-item" to="/charging">
       <cell title="正在充电" value="" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a0;</i>
+        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe609;</i>
       </cell>
        <cell-box style="padding: 0;"></cell-box>
     </router-link>
     <router-link tag="div" class="tab-item" to="/chargeRecord">
       <cell title="充电记录" value="" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a0;</i>
+        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe63c;</i>
       </cell>
        <cell-box style="padding: 0;"></cell-box>
     </router-link>
-    <router-link tag="div" class="tab-item" to="/chargeMeal">
+    <!-- <router-link tag="div" class="tab-item" to="/chargeMeal">
       <cell title="套餐记录" value="" is-link class="tab-link">
         <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a0;</i>
       </cell>
-    </router-link>
+    </router-link> -->
   </group>
   <group>
     <router-link tag="div" class="tab-item" to="/powerDetails">
-      <cell title="使用情况" value="" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a0;</i>
+      <cell title="充电" value="" is-link class="tab-link">
+        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe625;</i>
       </cell>
        <cell-box style="padding: 0;"></cell-box>
     </router-link>
     <router-link tag="div" class="tab-item" to="/collection">
       <cell title="常见故障" value="" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a0;</i>
+        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe600;</i>
       </cell>
     </router-link>
   </group>

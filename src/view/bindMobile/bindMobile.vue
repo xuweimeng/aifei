@@ -2,7 +2,7 @@
   <div class="bindMobile">
     <group style="margin-top: 2rem;">
       <x-input title="title" v-model="mobile" class="mobileInp" placeholder="请输入手机号" @on-focus="onBlur">
-        <i class="iconfont" slot="label" style="display:block;margin-right:5px;" width="24" height="24">&#xe779;</i>
+        <i class="iconfont" slot="label" style="display:block;margin-right:5px;color: #999;" width="24" height="24">&#xe630;</i>
       </x-input>
     </group>
     <group style="margin-top: 2rem;">
@@ -23,7 +23,7 @@
         </x-input>
     </group>
      <div>
-      <x-button class="bindBtn" @click.native="iconType = 'success'" type="primary">绑定手机号</x-button>
+      <x-button class="bindBtn" @click.native="iconType = 'success'">绑定手机号</x-button>
     </div>
   </div>
 </template>
@@ -89,16 +89,13 @@ export default {
   }
   .mobileCode {
     float: left;
-    width: 45%;
+    width: 50%;
     border: 1px solid #999;
     border-radius: .2rem !important;
   }
   .mobileCode2 {
     float: right;
     width: 35%;
-    // text-align: center;
-    // text-indent: .1rem;
-    // padding-left: 0.3rem;
     padding-right: 0.2rem;
     padding-left: .2rem;
     border: 1px solid #999;
@@ -120,6 +117,8 @@ export default {
 }
 .bindBtn {
   margin-top: 2.5rem;
+  background: #2ca1fa!important;
+  color: #fff!important;
 }
 ::-webkit-input-placeholder { /* WebKit browsers */
     color: #999;
