@@ -7,13 +7,15 @@
         default-item-class="demo4-item"
         selected-item-class="demo4-item-selected"
         class="checkerList">
-          <checker-item :value="1" @on-item-click="onItemClick2">5元<br><span class="spanText">售价:5.00元</span></checker-item>
-          <checker-item :value="2" @on-item-click="onItemClick2">10元<br><span class="spanText">售价:10.00元</span></checker-item>
-          <checker-item :value="3" @on-item-click="onItemClick2">31元<br><span class="spanText">售价:30.00元</span></checker-item>
-          <checker-item :value="4" @on-item-click="onItemClick2">52元<br><span class="spanText">售价:50.00元</span></checker-item>
-          <checker-item :value="5" @on-item-click="onItemClick2">104元<br><span class="spanText">售价:100.00元</span></checker-item>
-          <checker-item :value="6" @on-item-click="onItemClick2">207元<br><span class="spanText">售价:200.00元</span></checker-item>
-          <checker-item :value="7" @on-item-click="onItemClick2">311元<br><span class="spanText">售价:300.00元</span></checker-item>
+          <checker-item
+            v-for = "(item, index) in moneyList"
+            :key ='index'
+            :value="Number(index+1)" 
+            @on-item-click="onItemClick2(item)"
+          >
+            {{item.getMoney}}元<br>
+            <span class="spanText">售价:{{item.payMoney}}元</span>
+          </checker-item>
         </checker>
     </div>
     <div class="goChargeBtn">
@@ -33,13 +35,15 @@ export default {
   },
   data () {
     return {
-      defaultChecker: 5, // 默认选中的checker
-      checkMoney: 5, // 充值面值
-      openid: '' // openid
+      defaultChecker: 1, // 默认选中的checker
+      checkMoney: null, // 充值面值
+      openid: '', // openid
+      moneyList: [] // 活动充值面额
     }
   },
   mounted () {
     this.isOpenid()
+    this.getRechargeConfig()
   },
   methods: {
     /** 立即充值 **/
@@ -67,34 +71,25 @@ export default {
         console.log(error)
       })
     },
+    /**
+     * @function getRechargeConfig
+     * @description 获取充值面额
+     */
+    getRechargeConfig () {
+      API.powerDetails.getRechargeConfig({
+      }).then((res) => {
+        if (res.code === 0) {
+          this.moneyList = res.data
+          // 请求道面值后，默认第一次不选时的充值面额
+          this.checkMoney = res.data[0].payMoney
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     /** 选择1元，2元，3元，4元 **/
-    onItemClick2 (index) {
-      switch (index) {
-        case 1:
-          this.checkMoney = 5
-          break
-        case 2:
-          this.checkMoney = 10
-          break
-        case 3:
-          this.checkMoney = 30
-          break
-        case 4:
-          this.checkMoney = 50
-          break
-        case 5:
-          this.checkMoney = 100
-          break
-        case 6:
-          this.checkMoney = 200
-          break
-        case 7:
-          this.checkMoney = 300
-          break
-        default:
-          this.checkMoney = 5
-      }
-      console.log('this.checkMoney=', this.checkMoney)
+    onItemClick2 (item) {
+      this.checkMoney = item.payMoney
     },
     /** 创建订单 **/
     createOrdeCz () {
@@ -133,9 +128,6 @@ export default {
         font-size: .8rem;
 
       }
-      .checkerList {
-        padding: 0 .6rem;
-      }
     }
     //充值按钮
     .goChargeBtn {
@@ -154,6 +146,7 @@ export default {
   //默认按钮颜色
   .demo4-item {
     margin-top: .4rem;
+    margin-left: .58rem;
     padding: .3rem 0;
     width: 4.5rem;
     color: #999;
@@ -177,9 +170,9 @@ export default {
     bottom: 0;
     right: 0;
     z-index: 100;
-    border-top:1rem solid transparent;
-    border-left:1rem solid transparent;
-    border-right:1rem solid #0066cc;
+    border-top:1.2rem solid transparent;
+    border-left:1.2rem solid transparent;
+    border-right:1.2rem solid #0066cc;
   }
   .demo4-item-selected ::before {
     content: "✔";

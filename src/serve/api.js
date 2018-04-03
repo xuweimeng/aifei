@@ -113,6 +113,11 @@ export const powerDetails = {
   */
   getMyChargeListInfo (data) {
     return fetch('post', '/api/getMyChargeListInfo', data)
+  },
+  /*
+  *获取充值面额
+  */
+  getRechargeConfig (data) {
+    return fetch('post', '/api/getRechargeConfig', data)
   }
-
 }
