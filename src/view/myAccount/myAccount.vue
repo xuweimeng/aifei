@@ -34,9 +34,13 @@
         <cell-box style="padding: 0;"></cell-box>
       </router-link> -->
     </group>
-    <!-- <transition name="slide"> -->
+    <transition
+      name="custom-classes-transition"
+      enter-active-class="animated tada"
+      leave-active-class="animated bounceOutRight"
+    >
       <router-view></router-view>
-    <!-- </transition> -->
+    </transition>
   </div>
 </template>
 
@@ -90,12 +94,16 @@ export default {
 <style lang="less">
   @import '~vux/src/styles/reset.less';
   @import '~vux/src/styles/1px.less';
-
+  @import '../../styles/animate.css';
   .myAccount {
     position: fixed;
-    left: 0;
     top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     width: 100%;
+    z-index: 1000;
+    background: #FBF9FE;
   }
   .cellBox::before {
     left: 0!important;

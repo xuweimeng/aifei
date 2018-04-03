@@ -123,7 +123,7 @@ export default {
 @import '../../../styles/mixin.less';
 @import '~vux/src/styles/1px.less';
   .chargeNum {
-    background: #fff;
+    background: #FBF9FE;
     //选择面值
     .chargeMoney {
       p {

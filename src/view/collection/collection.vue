@@ -20,7 +20,14 @@ export default {
 
 <style lang="less">
   .collection {
-    margin: .4rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    z-index: 500;
+    overflow-y: auto;
     .question {
       padding: 1.75rem 0 .75rem 1.25rem;
       font-size: .8rem;
