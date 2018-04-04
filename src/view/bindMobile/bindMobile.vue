@@ -1,7 +1,17 @@
 <template>
   <div class="bindMobile">
     <group style="margin-top: 2rem;">
-      <x-input title="title" v-model="mobile" class="mobileInp" placeholder="请输入手机号" @on-focus="onBlur">
+      <x-input title="title" 
+        v-model="mobile" 
+        class="mobileInp" 
+        placeholder="请输入手机号" 
+        @on-blur="onBlur"
+        keyboard="number"
+        is-type="china-mobile"
+        mask="999 9999 9999"
+        :max="13"
+        required>
+      >
         <i class="iconfont" slot="label" style="display:block;margin-right:5px;color: #999;" width="24" height="24">&#xe630;</i>
       </x-input>
     </group>
@@ -23,29 +33,37 @@
         </x-input>
     </group>
      <div>
-      <x-button class="bindBtn" @click.native="iconType = 'success'">绑定手机号</x-button>
+      <x-button class="bindBtn" @click.native="bindBtn">绑定手机号</x-button>
     </div>
+    <!-- 手机号验证弹框 -->
+    <alert v-model="alertMobile" title="提示">{{alertText}}</alert>
   </div>
 </template>
 
 <script>
-import { XInput, Group, XButton, Countdown } from 'vux'
+import { XInput, Group, XButton, Countdown, Alert } from 'vux'
+import { API } from '../../serve/index'
 export default {
   data () {
     return {
+      openid: '', // openid
       mobile: '', // 手机号
       start: false, // 是否开始倒计时
       show: false, // 倒计时
       time1: 60, // 倒计时60s
       showText: '发送验证码', // 倒计时文本
-      showText2: 's后重新获取' // 倒计时文本
+      showText2: 's后重新获取', // 倒计时文本
+      isSms: false, // 是否获取过短信验证码
+      alertMobile: false, // 弹框是否显示
+      alertText: '' // 弹框text
     }
   },
   components: {
     XInput,
     Group,
     XButton,
-    Countdown
+    Countdown,
+    Alert
   },
   methods: {
     /**
@@ -53,8 +71,19 @@ export default {
      *@description 获取短信验证码
      */
     getCode () {
-      this.show = true
-      this.start = true
+      let reg = /0?(13|14|15|17|18|19)[0-9]{9}/
+      let mobile = this.mobile.replace(/\s|\xA0/g, '')
+      if (reg.test(mobile)) {
+        this.show = true
+        this.start = true
+      } else {
+        this.alertMobile = true
+        this.alertText = '手机号格式不对！'
+      }
+      // 如果开始倒计时，执行ajax函数
+      if (this.start) {
+        this.getSmsCode()
+      }
     },
     /**
      *@function finish
@@ -66,13 +95,50 @@ export default {
       this.start = false
       this.time1 = 60
     },
+    /**
+     * 为什么无效，function无效
+     */
     onBlur (value, $event) {
+      alert('focus')
       let reg = /0?(13|14|15|17|18|19)[0-9]{9}/
       if (reg.test(value)) {
         console.log('手机号正常')
       } else {
         console.log('手机号格式错误')
       }
+    },
+    /**
+     * @description 获取短信验证码
+     * @param {String} phone 手机号
+     */
+    getSmsCode () {
+      API.powerDetails.sendPhoneCode({
+        'phone': this.mobile
+      }).then((res) => {
+        console.log(res)
+        if (res.code === 0) {
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    /**
+     * @
+     * 
+     */
+    bindBtn () {
+      API.powerDetails.bindPhone({
+        'openid': this.openid,
+        'code': cookie.get('code'),
+        'phone': this.mobile
+      }).then((res) => {
+        if (res.code === 0) {
+          this.alertText = '绑定成功！'
+        }
+      }).catch((error) => {
+        this.alertMobile = true
+        this.alertText = error
+      })
     }
   }
 }

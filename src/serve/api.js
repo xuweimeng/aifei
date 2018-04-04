@@ -119,5 +119,17 @@ export const powerDetails = {
   */
   getRechargeConfig (data) {
     return fetch('post', '/api/getRechargeConfig', data)
+  },
+  /*
+  *获取验证码
+  */
+  sendPhoneCode (data) {
+    return fetch('post', '/api/sendPhoneCode', data)
+  },
+  /*
+    *获取验证码
+    */
+  bindPhone (data) {
+    return fetch('post', '/api/bindPhone', data)
   }
 }
