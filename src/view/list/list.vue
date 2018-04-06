@@ -115,11 +115,11 @@ export default {
         console.log(res)
         if (res.code === 0) {
           this.openId = res.data.openId
-          cookie.set('openid', this.openId)
           this.nickname = res.data.nickname
           this.headImgUrl = res.data.headImgUrl
           this.myMoney = res.data.myMoney
-          console.log(this.powerNumber)
+          cookie.set('myMoney', res.data.myMoney)
+          cookie.set('openid', this.openId)
         }
       }).catch((error) => {
         console.log(error)

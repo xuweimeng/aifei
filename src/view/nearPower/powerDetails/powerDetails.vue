@@ -15,25 +15,23 @@
       </flexbox>
       <div class="bianhao"><span class="span1">编号：{{ powerMessage?powerMessage.devicenum : '' }}</span><span class="span2">{{ powerMessage?powerMessage.installtime : '' }}</span></div>
     </div>
-    <!-- tab功能 -->
-    <!-- <flexbox class="useElec">
-      <flexbox-item><i class="iconfont">&#xe797;</i>导航</flexbox-item>
-      <flexbox-item><i class="iconfont">&#xe797;</i>纠错</flexbox-item>
-      <flexbox-item><i class="iconfont">&#xe797;</i>分享</flexbox-item>
-      <flexbox-item><i class="iconfont">&#xe797;</i>联系</flexbox-item>
-    </flexbox> -->
     <!-- 充电机使用情况 -->
     <div class="electric">
       <div v-for="(item, index) in powerNumber" :key="index" class="pp" @click="goPayFun(item.info, index)">
         <div class="elekou rel" v-bind:class="[item.info == 3 || item.info == 4?chargeBorder2:chargeBorder1 ]">
           <div class="lines1 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?(useingBackground):item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
           </div>
-          <!-- <div class="lines11 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?(useingBackground):item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
+          <div class="lines11 abs"></div>
+          <!-- <div class="lines11 abs">
+            <div class="transDiv div1 showDiv1"></div>
+            <div class="transDiv div2 showDiv2"></div>
+            <div class="transDiv div3 showDiv3"></div>
+            <div class="transDiv div4 showDiv4"></div>
+            <div class="transDiv div5 showDiv5"></div>
           </div> -->
           <div class="lines2 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?useingBackground:item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
           </div>
-          <!-- <div class="lines22 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?useingBackground:item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
-          </div> -->
+          <div class="lines22 abs freeBackground"></div>
           <div class="text1 abs">
             {{index+1 < 10 ? '0'+(index+1):index+1}}
             </div>
@@ -100,13 +98,13 @@ export default {
   },
   mounted () {
     this.getCode()
-    // this.getMyInfo()
   },
   methods: {
     /** 获取当前二维码的电桩信息 **/
     getCode () {
       let deviceCode = cookie.get('deviceCode')
       API.powerDetails.getDeviceInfo({
+        // 'deviceCode': '001'
         'deviceCode': deviceCode
       }).then((res) => {
         if (res.code === 0) {
@@ -128,7 +126,7 @@ export default {
       } else if (info === '1') {
         this.$router.push(
           {path: `/powerDetails/pay/${val + 1}`,
-            query: { openid: cookie.get('openid'), deviceCode: this.$store.state.vux.deviceCode }}
+            query: { openid: cookie.get('openid'), deviceCode: cookie.get('deviceCode') }}
         )
       }
     }
@@ -216,43 +214,50 @@ export default {
       background: #fff;
       .elekou {
         margin: 0.19rem .202rem;
-        .wh(2.7rem, 2.7rem);
+        .wh(2.5rem, 2.5rem);
         border-radius: 0.4rem;
         // border: 1px solid #79a5e4;
         .lines11 {
-          bottom: 0.35rem;
+          bottom: 0.41rem;
           left: -0.16rem;
           z-index: 100;
           width: .25rem;
-          height: 2rem;
+          height: 1.66rem;
           background: #fff;
           border: 1px solid #79a5e4;
+          .transDiv {
+            margin: .11rem auto 0;
+            width: .15rem;
+            height: .2rem;
+            background: red;
+            
+          }
         }
         .lines1 {
           width: .25rem;
-          height: 2rem;
+          height: 1.66rem;
           z-index: 1000;
-          bottom: 0.35rem;
-          left: -0.16rem;
+          bottom: 0.44rem;
+          left: -0.12rem;
         }
         .lines2 {
-          bottom: 0.35rem;
-          right: -0.18rem;
+          bottom: 0.43rem;
+          right: -0.15rem;
           z-index: 1000;
           width: .25rem;
-          height: 2rem;
+          height: 1.66rem;
         }
         .lines22 {
-          bottom: 0.35rem;
-          right: -0.18rem;
+          bottom: 0.41rem;
+          right: -0.2rem;
           z-index: 100;
           width: .25rem;
-          height: 2rem;
+          height: 1.67rem;
           background: #fff;
           border: 1px solid #79a5e4;
         }
         .text1 {
-          .wh (1.5rem, 1rem);
+          .wh (1.32rem, .8rem);
           background: #fff;
           text-align: center;
           font-size: 0.8rem;
@@ -262,7 +267,7 @@ export default {
           color: #333;
         }
         .text2 {
-          .wh (1.8rem, 1rem);
+          .wh (1.8rem, .8rem);
           background: #fff;
           text-align: center;
           font-size: 0.6rem;
@@ -298,25 +303,25 @@ export default {
   }
   @keyframes myfirst
   {
-  0%   { height: 0.3rem; }
-  15%  { height: 0.6rem; }
-  30%  { height: 0.9rem;}
-  45%  { height: 1.2rem;}
-  60%  { height: 1.5rem;}
-  75%  { height: 1.75rem;}
-  90%  { height: 1.9rem;}
-  100% { height: 2rem;}
+  0%   { height: .2rem}
+  15%  { height: .4rem}
+  30%  { height: .6rem}
+  45%  { height: .8rem}
+  60%  { height: 1rem}
+  75%  { height: 1.2rem}
+  90%  { height: 1.4rem}
+  100% { height: 1.6rem}
   }
   @-webkit-keyframes myfirst
   {
-  0%   { height: 0.3rem; }
-  15%  { height: 0.6rem; }
-  30%  { height: 0.9rem;}
-  45%  { height: 1.2rem;}
-  60%  { height: 1.5rem;}
-  75%  { height: 1.75rem;}
-  90%  { height: 1.9rem;}
-  100% { height: 2rem;}
+  0%   { height: .2rem}
+  15%  { height: .4rem}
+  30%  { height: .6rem}
+  45%  { height: .8rem}
+  60%  { height: 1rem}
+  75%  { height: 1.2rem}
+  90%  { height: 1.4rem}
+  100% { height: 1.6rem}
   }
   // 空闲
   .free {
@@ -349,7 +354,8 @@ export default {
   // 充电
   .useingBackground {
     background: #ff6800;
-    animation:  myfirst 3s linear  infinite;
+    animation:  myfirst 1s linear  infinite;
+    -webkit-animation:  myfirst 1s linear  infinite;
   }
   // 边框正常
   .chargeBorder1 {
@@ -359,5 +365,30 @@ export default {
   .chargeBorder2 {
     border: 1px solid #bfbfbf;
   }
-
+  // .showDiv1 {
+  //   animation:  show1 1.5s linear 1.5ss infinite;
+  // }
+  // .showDiv2 {
+  //   animation:  show1 3s linear 1.5s infinite;
+  // }
+  // .showDiv3 {
+  //   animation:  show1 4.5s linear 3s infinite;
+  // }
+  .showDiv4 {
+    animation:  show2 1s linear 10s infinite;
+    -webkit-animation:  show2 1s linear 10s infinite;
+  }
+  .showDiv5 {
+    animation:  show1 1s linear 0s infinite;
+  }
+  @keyframes show1
+  {
+  0%   { opacity: 1}
+  100% { opacity: 1}
+  }
+  @keyframes show2
+  {
+  0%   { opacity: 0}
+  100% { opacity: 1}
+  }
 </style>

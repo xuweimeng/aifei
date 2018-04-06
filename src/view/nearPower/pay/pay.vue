@@ -73,12 +73,12 @@
       </div>
     </div>
     <!-- 创建订单弹框 -->
-    <alert v-model="showOrder" :title="提示">{{showOrderTxt}}</alert>
+    <alert v-model="showOrder" title="提示">{{showOrderTxt}}</alert>
   </div>
 </template>
 
 <script>
-import { Divider, Flexbox, FlexboxItem, Tab, TabItem, XButton, CheckIcon, Checklist, Checker, CheckerItem, Alert } from 'vux'
+import { Divider, Flexbox, FlexboxItem, Tab, TabItem, XButton, CheckIcon, Checklist, Checker, CheckerItem, Alert, cookie } from 'vux'
 import { API } from '../../../serve/index'
 // import '../../../config/jweixin-1.2.0'
 export default {
@@ -102,7 +102,7 @@ export default {
       tabIndex: '1', // 1：按时收费，2：按量收费
       defaultChecker: 1, // 默认选中的checker
       zfType: '支付方式', // 支付方式标题
-      commonList: [], // 支付方式选择栏
+      commonList: ['1234'], // 支付方式选择栏
       radioValue: [], // 默认支付方式
       activeBtn: {
         color: '#fff',
@@ -146,21 +146,11 @@ export default {
      * @function getMyInfo
      */
     getMyInfo () {
-      API.powerDetails.getmyinfo({
-        'code': '',
-        'openid': this.$route.query.openid
-      }).then((res) => {
-        if (res.code === 0) {
-          this.myMoney = res.data.myMoney
-          let ccMoney = '我的余额' + 'res.data.myMoney' + '元'
-          this.commonList[0] = ccMoney
-          this.commonList[1] = '微信支付'
-          this.$nextTick(function () {
-            this.radioValue.push(ccMoney)
-          })
-        }
-      }).catch((error) => {
-        console.log(error)
+      let ccMoney = '我的余额：' + cookie.get('myMoney') + '元'
+      this.$nextTick(function () {
+        this.commonList[0] = ccMoney
+        this.commonList[1] = '微信支付'
+        this.radioValue.push(ccMoney)
       })
     },
     /** 插口号详情 **/
@@ -168,7 +158,7 @@ export default {
       // 插口号
       this.Portnum = this.$route.params.id
       this.deviceCode = this.$route.query.deviceCode
-      this.openid = this.$route.query.openid
+      this.openid = cookie.get('openid')
       // 插口号收费方式等
       API.powerDetails.payList({
         'deviceCode': this.deviceCode,
@@ -233,9 +223,14 @@ export default {
           let weixinUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0ed984de0f8d5972&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo&state=' + state + '#wechat_redirect'
           console.log(weixinUrl)
           window.location.href = weixinUrl
+        } else {
+          this.showOrder = true
+          this.showOrderTxt = res.message
         }
       }).catch((error) => {
         console.log(error)
+        this.showOrder = true
+        this.showOrderTxt = res.message
       })
     },
     /** 选择支付方式 **/
@@ -258,19 +253,19 @@ export default {
       this.btnInfo.id = item.id
       this.btnInfo.chargeCode = item.chargecode
     },
-    /** 获取微信pay **/
-    wxPay (test) {
-      API.powerDetails.wxPay({
-        'code': test,
-        'money': '2',
-        'state': '11'
-      }).then((res) => {
-        console.log(res)
-        this.weixinPay(res.data)
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
+    // /** 获取微信pay **/
+    // wxPay (test) {
+    //   API.powerDetails.wxPay({
+    //     'code': test,
+    //     'money': '2',
+    //     'state': '11'
+    //   }).then((res) => {
+    //     console.log(res)
+    //     this.weixinPay(res.data)
+    //   }).catch((error) => {
+    //     console.log(error)
+    //   })
+    // },
     weixinPay (data) {
       // pay(data)
       // function pay () {
