@@ -2,7 +2,9 @@
   <div id="app">
     <!-- <loading v-model="isLoading"></loading> -->
     <transition name="slide2">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </transition>
   </div>
 </template>

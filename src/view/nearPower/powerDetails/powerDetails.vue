@@ -28,12 +28,12 @@
         <div class="elekou rel" v-bind:class="[item.info == 3 || item.info == 4?chargeBorder2:chargeBorder1 ]">
           <div class="lines1 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?(useingBackground):item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
           </div>
-          <div class="lines11 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?(useingBackground):item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
-          </div>
+          <!-- <div class="lines11 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?(useingBackground):item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
+          </div> -->
           <div class="lines2 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?useingBackground:item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
           </div>
-          <div class="lines22 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?useingBackground:item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
-          </div>
+          <!-- <div class="lines22 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?useingBackground:item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
+          </div> -->
           <div class="text1 abs">
             {{index+1 < 10 ? '0'+(index+1):index+1}}
             </div>
@@ -53,7 +53,7 @@
       </div>
       <!-- 弹框提示 -->
       <div>
-        <alert v-model="show" title="" @on-show="onShow" @on-hide="onHide"> {{showText}} </alert>
+        <alert v-model="show" title=""> {{showText}} </alert>
       </div>
       <router-view></router-view>
   </div>
@@ -62,8 +62,6 @@
 <script>
 import { Flexbox, FlexboxItem, Divider, Search, XButton, Grid, GridItem, Alert, cookie } from 'vux'
 import { API } from '../../../serve/index'
-// import getQueryString from '../../../config/getUrl'
-// import { mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -102,44 +100,18 @@ export default {
   },
   mounted () {
     this.getCode()
-    this.getMyInfo()
+    // this.getMyInfo()
   },
   methods: {
     /** 获取当前二维码的电桩信息 **/
     getCode () {
-      console.log(this.$store.state)
-      // let code = this.$store.state.vux.code
-      // let deviceCode = this.$store.state.vux.deviceCode
       let deviceCode = cookie.get('deviceCode')
-      // this.$store.commit('deviceCodeMua', {
-      //   deviceCode: deviceCode
-      // })
-      // this.$store.commit('CodeMua', {
-      //   code: code
-      // })
       API.powerDetails.getDeviceInfo({
         'deviceCode': deviceCode
-        // 'code': code
       }).then((res) => {
         if (res.code === 0) {
-          // this.openId = res.data.openid
           this.powerMessage = res.data.deviceinfoEntity
           this.powerNumber = res.data.portEntityList
-          // 在getDeviceInfo接口获得微信的oppenId，存储到cookie
-          // cookie.set('code', '22222')
-        }
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-    /** 获取当前用户的信息 **/
-    getMyInfo () {
-      API.powerDetails.getmyinfo({
-        'code': cookie.get('code')
-      }).then((res) => {
-        if (res.code === 0) {
-          this.$store.dispatch('acbalance', res.data)
-          this.openId = res.data.openId
         }
       }).catch((error) => {
         console.log(error)
@@ -156,16 +128,9 @@ export default {
       } else if (info === '1') {
         this.$router.push(
           {path: `/powerDetails/pay/${val + 1}`,
-            query: { openid: this.openId, deviceCode: this.$store.state.vux.deviceCode }}
+            query: { openid: cookie.get('openid'), deviceCode: this.$store.state.vux.deviceCode }}
         )
       }
-    },
-    // 弹框关闭显示的自定义事件
-    onHide () {
-      console.log('on hide')
-    },
-    onShow () {
-      console.log('on show')
     }
   }
 }

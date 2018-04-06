@@ -28,11 +28,11 @@
         </cell>
         <cell-box style="padding: 0;"></cell-box>
       </router-link>
-      <!-- <router-link tag="div" class="tab-item" to="">
-        <cell title="修改手机号" :value="`${userPhone}`" class="beforeLine" is-link>
+      <router-link tag="div" class="tab-item" to="">
+        <cell title="手机号" :value="`${userPhone}`" class="beforeLine" is-link>
         </cell>
         <cell-box style="padding: 0;"></cell-box>
-      </router-link> -->
+      </router-link>
     </group>
     <transition
       name="custom-classes-transition"
@@ -58,23 +58,40 @@ export default {
       nickname: '', // 用户名
       headImgUrl: '', // 用户余额
       myMoney: '', // 用户余额
-      openid: '' // openid
+      openid: '', // openid
+      userPhone: '' // 手机号
     }
   },
   mounted () {
-    this.getMyInfo()
+    this.getCookieOpenid()
   },
   methods: {
-
+    /**
+     * @description 判断本地cookie是否存储oppenid，否则调用getMyInfo
+     */
+    getCookieOpenid () {
+      let cookieOpenId = cookie.get('openid')
+      if (cookieOpenId) {
+        this.openid = cookieOpenId
+      } else {
+        this.getMyInfo()
+      }
+    },
+    /**
+     * @description 从code获取openid
+     * @function getMyInfo
+     */
     getMyInfo () {
       API.powerDetails.getmyinfo({
-        'code': cookie.get('code')
+        'code': cookie.get('code'),
+        'openid': this.openid
       }).then((res) => {
         console.log(res)
         if (res.code === 0) {
           this.nickname = res.data.nickname
           this.headImgUrl = res.data.headImgUrl
           this.myMoney = res.data.myMoney
+          this.userPhone = res.data.phonenum
           this.openid = res.data.openId
         }
       }).catch((error) => {
@@ -83,9 +100,11 @@ export default {
     }
   },
   watch: {
-    $route (to, from) {
+    '$route' (to, from) {
       console.log(from)
-      console.log(to)
+      if (from.path === '/chargeNum') {
+        this.getMyInfo()
+      }
     }
   }
 }

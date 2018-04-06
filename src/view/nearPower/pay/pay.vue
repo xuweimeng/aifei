@@ -102,8 +102,8 @@ export default {
       tabIndex: '1', // 1：按时收费，2：按量收费
       defaultChecker: 1, // 默认选中的checker
       zfType: '支付方式', // 支付方式标题
-      commonList: [ '我的余额', '微信支付' ], // 支付方式选择栏
-      radioValue: ['微信支付'], // 默认支付方式
+      commonList: [], // 支付方式选择栏
+      radioValue: [], // 默认支付方式
       activeBtn: {
         color: '#fff',
         background: '#4e82d1'
@@ -137,23 +137,38 @@ export default {
   computed: {
   },
   mounted () {
+    this.getMyInfo()
     this.getPayInfo()
-    // this.getOpenId()
-    // this.$nextTick(function () {
-    // this.getConfig()
-    // })
   },
   methods: {
+    /**
+     * @description 获取我的余额
+     * @function getMyInfo
+     */
+    getMyInfo () {
+      API.powerDetails.getmyinfo({
+        'code': '',
+        'openid': this.$route.query.openid
+      }).then((res) => {
+        if (res.code === 0) {
+          this.myMoney = res.data.myMoney
+          let ccMoney = '我的余额' + 'res.data.myMoney' + '元'
+          this.commonList[0] = ccMoney
+          this.commonList[1] = '微信支付'
+          this.$nextTick(function () {
+            this.radioValue.push(ccMoney)
+          })
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     /** 插口号详情 **/
     getPayInfo () {
       // 插口号
       this.Portnum = this.$route.params.id
       this.deviceCode = this.$route.query.deviceCode
       this.openid = this.$route.query.openid
-      // 账户余额
-      let balance = this.$store.state.vux.balance
-      // console.log(this.$store.state.vux.balance)
-      this.commonList[0] = ' 我的余额 ' + ' &nbsp;' + ' <span class="span"> ' + ' ( ' + balance + ' 元) ' + ' </apsn> '
       // 插口号收费方式等
       API.powerDetails.payList({
         'deviceCode': this.deviceCode,
@@ -243,28 +258,6 @@ export default {
       this.btnInfo.id = item.id
       this.btnInfo.chargeCode = item.chargecode
     },
-    /** 获取微信openid **/
-    // getOpenId () {
-    //   API.powerDetails.getOpenId({
-    //     'code': this.code
-    //   }).then((res) => {
-    //     console.log(res)
-    //     this.openid = res.data
-    //   }).catch((error) => {
-    //     console.log(error)
-    //   })
-    // },
-    /** 获取微信jssdk配置信息 **/
-    // getConfig () {
-    //   let url = location.href.split('#')[0] // 获取锚点之前的链接
-    //   API.powerDetails.config({
-    //     'rurl': url
-    //   }).then((res) => {
-    //     console.log(res)
-    //   }).catch((error) => {
-    //     console.log(error)
-    //   })
-    // },
     /** 获取微信pay **/
     wxPay (test) {
       API.powerDetails.wxPay({
@@ -279,7 +272,6 @@ export default {
       })
     },
     weixinPay (data) {
-      console.log('test--------------pay的data')
       // pay(data)
       // function pay () {
       //   if (typeof WeixinJSBridge === 'undefined') {
@@ -361,7 +353,7 @@ export default {
 
   },
   watch: {
-    $route (to, from) {
+    '$route' (to, from) {
       // this.getConfig()
     }
   }
@@ -372,7 +364,7 @@ export default {
 @import '../../../styles/mixin.less';
 // @import '../../../styles/iconfont.less';
   .payPage {
-    z-index: 110;
+    z-index: 2000;
     &_over {
       overflow-y: auto;
       overflow-x: hidden;

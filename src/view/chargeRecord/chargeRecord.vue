@@ -64,7 +64,7 @@ export default {
       API.powerDetails.getOpenId({
         'code': cookie.get('code')
       }).then((res) => {
-        this.openid = res.data.openId
+        this.openid = res.data
       }).catch((error) => {
         console.log(error)
       })

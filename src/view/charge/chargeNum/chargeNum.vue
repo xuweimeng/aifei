@@ -94,13 +94,13 @@ export default {
     /** 创建订单 **/
     createOrdeCz () {
       API.powerDetails.createOrdeCz({
-        'openid': this.openid, // 设备的code
+        'openid': cookie.get('openid'), // openid
         'chargeType': 3, // 按时按量首位
-        'money': 0.01
+        'money': this.checkMoney
       }).then((res) => {
         if (res.code === 0) {
           console.log('hello')
-          let url = 'http://www.mehuabei.com/api/paycz?money=' + 0.01
+          let url = 'http://www.mehuabei.com/api/paycz?money=' + this.checkMoney
           let state = res.orderNum
           let weixinUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0ed984de0f8d5972&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo&state=' + state + '#wechat_redirect'
           console.log(weixinUrl)

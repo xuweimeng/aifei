@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { XInput, Group, XButton, Countdown, Alert } from 'vux'
+import { XInput, Group, XButton, Countdown, Alert, cookie } from 'vux'
 import { API } from '../../serve/index'
 export default {
   data () {
@@ -65,7 +65,31 @@ export default {
     Countdown,
     Alert
   },
+  mounted () {
+    this.getCookieOpenid()
+  },
   methods: {
+    /**
+     * @description 判断本地cookie是否存储oppenid，否则调用getMyInfo
+     */
+    getCookieOpenid () {
+      let cookieOpenId = cookie.get('openid')
+      if (cookieOpenId) {
+        this.openid = cookieOpenId
+      } else {
+        this.getOpenId()
+      }
+    },
+    /** 获取微信openid **/
+    getOpenId () {
+      API.powerDetails.getOpenId({
+        'code': cookie.get('code')
+      }).then((res) => {
+        this.openid = res.data
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     /**
      *@function getCode
      *@description 获取短信验证码
@@ -99,7 +123,6 @@ export default {
      * 为什么无效，function无效
      */
     onBlur (value, $event) {
-      alert('focus')
       let reg = /0?(13|14|15|17|18|19)[0-9]{9}/
       if (reg.test(value)) {
         console.log('手机号正常')
@@ -123,8 +146,8 @@ export default {
       })
     },
     /**
-     * @
-     * 
+     * @description 绑定手机
+     * @function bindBtn
      */
     bindBtn () {
       API.powerDetails.bindPhone({

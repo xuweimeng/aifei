@@ -33,16 +33,27 @@ export default {
     }
   },
   mounted () {
-    // this.getOpenId()
+    this.getCookieOpenid()
     this.getEleRecord()
   },
   methods: {
+    /**
+     * @description 判断本地cookie是否存储oppenid，否则调用getMyInfo
+     */
+    getCookieOpenid () {
+      let cookieOpenId = cookie.get('openid')
+      if (cookieOpenId) {
+        this.openid = cookieOpenId
+      } else {
+        this.getOpenId()
+      }
+    },
     /** 获取微信openid **/
     getOpenId () {
       API.powerDetails.getOpenId({
         'code': cookie.get('code')
       }).then((res) => {
-        console.log(res)
+        this.openid = res.data
       }).catch((error) => {
         console.log(error)
       })
