@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import Vue from 'vue'
 import FastClick from 'fastclick'
 import router from './router'
@@ -14,7 +15,6 @@ Vue.use(AjaxPlugin)
 Vue.use(WechatPlugin)
 Vue.use(cookie)
 Vue.use(VueRouter)
-// console.log(Vue.http)
 
 FastClick.attach(document.body)
 Vue.config.productionTip = false
@@ -31,9 +31,16 @@ if (global.browserQuery.page.includes('deviceCode')) {
   global.browserQuery.page = arr1[0]
   global.browserQuery.deviceCode = arr1[1].substring(11, arr1[1].length)
 }
-console.log(global.browserQuery)
+Vue.wechat.closeWindow()
+console.log(Vue.wechat)
 cookie.set('code', global.browserQuery.code)
 router.beforeEach(function (to, from, next) {
+  if (global.browserQuery.page === 'list') {
+    window.addEventListener('popstate', function (e) {
+      // alert('我监听到了浏览器的返回按钮事件啦') // 根据自己的需求实现自己的功能
+      this.$wechat.closeWindow()
+    }, false)
+  }
   console.log('deviceCode=' + global.browserQuery.deviceCode)
   console.log('code=' + global.browserQuery.code)
   if (global.browserQuery.deviceCode && global.browserQuery.code) {

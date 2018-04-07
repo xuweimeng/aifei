@@ -230,7 +230,7 @@ export default {
       }).catch((error) => {
         console.log(error)
         this.showOrder = true
-        this.showOrderTxt = res.message
+        this.showOrderTxt = error.message
       })
     },
     /** 选择支付方式 **/
