@@ -365,30 +365,4 @@ export default {
   .chargeBorder2 {
     border: 1px solid #bfbfbf;
   }
-  // .showDiv1 {
-  //   animation:  show1 1.5s linear 1.5ss infinite;
-  // }
-  // .showDiv2 {
-  //   animation:  show1 3s linear 1.5s infinite;
-  // }
-  // .showDiv3 {
-  //   animation:  show1 4.5s linear 3s infinite;
-  // }
-  .showDiv4 {
-    animation:  show2 1s linear 10s infinite;
-    -webkit-animation:  show2 1s linear 10s infinite;
-  }
-  .showDiv5 {
-    animation:  show1 1s linear 0s infinite;
-  }
-  @keyframes show1
-  {
-  0%   { opacity: 1}
-  100% { opacity: 1}
-  }
-  @keyframes show2
-  {
-  0%   { opacity: 0}
-  100% { opacity: 1}
-  }
 </style>

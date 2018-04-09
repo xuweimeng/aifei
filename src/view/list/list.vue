@@ -124,6 +124,11 @@ export default {
       }).catch((error) => {
         console.log(error)
       })
+    },
+    watch: {
+      '$route' (to, from) {
+        console.log(to, from)
+      }
     }
   }
 }

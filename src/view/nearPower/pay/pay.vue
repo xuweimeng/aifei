@@ -123,7 +123,7 @@ export default {
       chargeTypeList1: [], // 按量收费金额
       deviceCode: '', // 电桩号
       code: '', // 公众号code
-      payType: '', // 支付方式1:余额支付  2：微信支付
+      payType: '1', // 支付方式1:余额支付  2：微信支付
       btnInfo: { // 按时收费的id, chargeCode
         id: '',
         chargeCode: ''
@@ -221,8 +221,16 @@ export default {
           let url = 'http://www.mehuabei.com/api/paycz?money=' + this.itemMoney
           let state = res.orderNum
           let weixinUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0ed984de0f8d5972&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo&state=' + state + '#wechat_redirect'
-          console.log(weixinUrl)
-          window.location.href = weixinUrl
+          if (this.payType === 1) {
+            this.showOrder = true
+            this.showOrderTxt = res.message
+            setTimeout(() => {
+              this.showOrder = false
+              this.$router.push({ path: '/powerDetails' })
+            }, 1500)
+          } else {
+            window.location.href = weixinUrl
+          }
         } else {
           this.showOrder = true
           this.showOrderTxt = res.message
@@ -237,8 +245,6 @@ export default {
     change (value, label) {
       if (label[0] === '微信支付') {
         this.payType = 2
-      } else if (label[0] === undefined) {
-        this.payType = ''
       } else {
         this.payType = 1
       }
@@ -252,104 +258,6 @@ export default {
       this.itemMoney = item.money
       this.btnInfo.id = item.id
       this.btnInfo.chargeCode = item.chargecode
-    },
-    // /** 获取微信pay **/
-    // wxPay (test) {
-    //   API.powerDetails.wxPay({
-    //     'code': test,
-    //     'money': '2',
-    //     'state': '11'
-    //   }).then((res) => {
-    //     console.log(res)
-    //     this.weixinPay(res.data)
-    //   }).catch((error) => {
-    //     console.log(error)
-    //   })
-    // },
-    weixinPay (data) {
-      // pay(data)
-      // function pay () {
-      //   if (typeof WeixinJSBridge === 'undefined') {
-      //     if (document.addEventListener) {
-      //       document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false)
-      //     } else if (document.attachEvent) {
-      //       document.attachEvent('WeixinJSBridgeReady', onBridgeReady)
-      //       document.attachEvent('onWeixinJSBridgeReady', onBridgeReady)
-      //     }
-      //   } else {
-      //     onBridgeReady(data)
-      //   }
-      // }
-      // function onBridgeReady (data) {
-      //   console.log('test--------------pay的data')
-      //   WeixinJSBridge.invoke(
-      //     'getBrandWCPayRequest', {
-      //       'appId': data.appid, // 公众号名称，由商户传入
-      //       'timeStamp': data.timeStamp, // 时间戳，自1970年以来的秒数
-      //       'nonceStr': data.nonceStr, // 随机串
-      //       'package': data.packageValue,
-      //       'signType': 'MD5', // 微信签名方式
-      //       'paySign': data.paySign // 微信签名
-      //     }, function (res) {
-      //       if (res.err_msg === 'get_brand_wcpay_request:ok') {
-      //         alert('微信支付成功!')
-      //       } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-      //         alert('用户取消支付!')
-      //       } else {
-      //         alert('支付失败!')
-      //       }
-      //     })
-      // }
-    },
-    /** 微信支付 **/
-    weixinFun (res) {
-      // res = eval('('+res+')')
-      // res = JSON.parse(res)
-      // this.$wechat.config({
-      //   debug: true,
-      //   appId: res.appId, // wx0ed984de0f8d5972
-      //   timestamp: res.timestamp,
-      //   nonceStr: res.nonceStr,
-      //   signature: res.signature,
-      //   jsApiList: [
-      //     'chooseWXPay',
-      //     'getNetworkType',
-      //     'chooseImage'
-      //   ]
-      // })
-      // 通过ready接口处理成功验证
-      // this.$wechat.ready(function () {
-      //   console.log(this.$wechat)
-      //   this.$wechat.chooseImage({
-      //     count: 1, // 默认9
-      //     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      //     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      //     success: function (res) {
-      //       let localIds = res.localIds // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-      //       alert('调取照片成功')
-      //       console.log(localIds)
-      //     },
-      //     fail: function (res) {
-      //       console.log(res)
-      //     }
-      //   })
-      //   this.$wechat.getNetworkType({
-      //     success: function (res) {
-      //       var networkType = res.networkType // 返回网络类型2g，3g，4g，wifi
-      //       alert(' 设备信息 = ' + networkType)
-      //     }
-      //   })
-      // })
-      // 错误挫力
-      // this.$wechat.error(function (res) {
-      //   console.log(res)
-      // })
-    }
-
-  },
-  watch: {
-    '$route' (to, from) {
-      // this.getConfig()
     }
   }
 }

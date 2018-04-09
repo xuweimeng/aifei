@@ -38,7 +38,8 @@ router.beforeEach(function (to, from, next) {
   if (global.browserQuery.page === 'list') {
     window.addEventListener('popstate', function (e) {
       // alert('我监听到了浏览器的返回按钮事件啦') // 根据自己的需求实现自己的功能
-      this.$wechat.closeWindow()
+      // Vue.wechat.closeWindow()
+      window.opener = null
     }, false)
   }
   console.log('deviceCode=' + global.browserQuery.deviceCode)
