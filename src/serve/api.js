@@ -6,7 +6,7 @@ import qs from 'qs'
 Vue.prototype.$http = axios
 
 /* 默认请求地址 */
-axios.defaults.baseURL = 'http://120.79.223.147:80/'
+// axios.defaults.baseURL = 'http://120.79.223.147:80/'
 
 /* 默认最长响应时间 */
 // axios.defaults.timeout = 500

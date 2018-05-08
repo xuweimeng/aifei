@@ -2,15 +2,6 @@
 <div class="my" v-if="isUser">
   <!-- 头部 -->
   <info-header :user-img="headImgUrl" :user-phone="phonenum" :user-name="nickname"></info-header>
-  <!-- 功能列表 -->
-  <!-- <group> -->
-    <!-- <router-link tag="div" class="tab-item" :to="{ path: '/myAccount' }">
-      <cell title="我的账号" value="" class="beforeLine" is-link >
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe66c;</i>
-      </cell>
-      <cell-box style="padding: 0;"></cell-box>
-    </router-link> -->
-  <!-- </group> -->
   <group>
     <router-link tag="div" class="tab-item" to="/chargeNum">
       <cell title="我要充值" :value="`${myMoney}元`" is-link class="tab-link">
@@ -30,11 +21,6 @@
       </cell>
        <cell-box style="padding: 0;"></cell-box>
     </router-link>
-    <!-- <router-link tag="div" class="tab-item" to="/cardBind">
-      <cell title="电卡绑定" value="绑定电卡享有更多服务" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a7;</i>
-      </cell>
-    </router-link> -->
   </group>
   <group>
     <router-link tag="div" class="tab-item" to="/charging">
@@ -49,25 +35,14 @@
       </cell>
        <cell-box style="padding: 0;"></cell-box>
     </router-link>
-    <!-- <router-link tag="div" class="tab-item" to="/chargeMeal">
-      <cell title="套餐记录" value="" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe7a0;</i>
-      </cell>
-    </router-link> -->
   </group>
   <group style="margin-bottom: 1rem">
     <!-- <router-link tag="div" class="tab-item" to="/powerDetails">
-      <cell title="充电" value="" is-link class="tab-link">
-        <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe625;</i>
-      </cell>
-       <cell-box style="padding: 0;"></cell-box>
-    </router-link> -->
-    <router-link tag="div" class="tab-item" to="/powerDetails">
       <cell title="联系我们" value="" is-link class="tab-link">
         <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe625;</i>
       </cell>
        <cell-box style="padding: 0;"></cell-box>
-    </router-link>
+    </router-link> -->
     <router-link tag="div" class="tab-item" to="/collection">
       <cell title="常见故障" value="" is-link class="tab-link">
         <i class="iconfont" slot="icon" style="display:block;margin-right:5px;">&#xe600;</i>
@@ -79,17 +54,17 @@
 
 <script>
 import infoHeader from '@/view/infoHeader/infoHeader'
-import { Group, Cell, CellBox, cookie } from 'vux'
+import { Loading, Group, Cell, CellBox, cookie, XButton } from 'vux'
 import { API } from '../../serve/index'
 
 export default {
-  created () {
-  },
   components: {
     infoHeader,
     Group,
     Cell,
-    CellBox
+    CellBox,
+    Loading,
+    XButton
   },
   computed: {
     isUser () {
@@ -108,6 +83,7 @@ export default {
     this.getMyInfo()
   },
   methods: {
+
     getMyInfo () {
       API.powerDetails.getmyinfo({
         'code': cookie.get('code')

@@ -40,6 +40,7 @@
         <p class="tips1" v-if="tabIndex == 1">
           提示：大功率电瓶车按时收费可能会被拒充，建议使用按量收费。
         </p>
+        <!-- 按量收费 -->
         <div class="tipe3" v-if="tabIndex == 2">
           <flexbox>
             <flexbox-item :span="1/4">
@@ -61,7 +62,11 @@
         <p class="tips2" v-if="tabIndex == 2" style="padding-top: .5rem;">提示：插座意外断开，将返还剩余金额</p>
         <!-- 开始充电 -->
         <div class="startElerc">
-          <x-button @click.native="startElerc" class="startElercBtn">开始充电</x-button>
+          <x-button 
+          :disabled="disabled001"
+          :show-loading = "showLoading"
+          @click.native="startElerc" 
+          class="startElercBtn">开始充电</x-button>
         </div>
         <!-- 选择支付方式 -->
         <div class="payType">
@@ -131,7 +136,9 @@ export default {
       openid: '', // 微信openid
       showOrder: false, // 是否支持按时或按量充电
       showOrderTxt: '', // 提示文本
-      itemMoney: '' // 选择充值的金额
+      itemMoney: '', // 选择充值的金额
+      disabled001: false, // 开始充电按钮是否不可选
+      showLoading: false // 开始充电按钮loading
     }
   },
   computed: {
@@ -147,9 +154,15 @@ export default {
      */
     getMyInfo () {
       let ccMoney = '我的余额：' + cookie.get('myMoney') + '元'
-      this.$nextTick(function () {
+      this.commonList.length = 0
+      if (this.tabIndex === '1') {
         this.commonList[0] = ccMoney
         this.commonList[1] = '微信支付'
+      } else {
+        this.commonList[0] = ccMoney
+      }
+      // 刷新后选中第一个
+      this.$nextTick(function () {
         this.radioValue.push(ccMoney)
       })
     },
@@ -186,17 +199,21 @@ export default {
     /** 收费tab点击 **/
     onItemClick (index) {
       this.tabIndex = String(index + 1) // 1按量2按时
+      console.log(this.tabIndex)
+      this.getMyInfo()
     },
     /** 开始充电 **/
     startElerc () {
-      if (this.tabIndex === '1') {
+      this.disabled001 = true
+      this.showLoading = true
+      if (this.tabIndex === '2') {
         if (this.deviceinfoEntity.chargetype === '2' || this.deviceinfoEntity.chargetype === '3') {
           this.createOrderFun()
         } else {
           this.showOrder = true
           this.showOrderTxt = '暂时不支持按量充电'
         }
-      } else if (this.tabIndex === '2') {
+      } else if (this.tabIndex === '1') {
         if (this.deviceinfoEntity.chargetype === '1' || this.deviceinfoEntity.chargetype === '3') {
           this.createOrderFun()
         } else {
@@ -210,13 +227,15 @@ export default {
     createOrderFun () {
       API.powerDetails.createOrder({
         'openid': this.openid, // 设备的openid
-        'Portnum': this.Portnum, // 插座好
+        'portnum': this.Portnum, // 插座好
         'chargeTypeId': this.btnInfo.id, // --------------------
         'deviceId': this.deviceinfoEntity.id, // 设备的id
         'paytype': this.payType, // 付款方式
         'chargeType': this.tabIndex, // 按时按量首位
         'chargeCode': this.btnInfo.chargeCode
       }).then((res) => {
+        this.disabled001 = false
+        this.showLoading = false
         if (res.code === 0) {
           let url = 'http://www.mehuabei.com/api/paycz?money=' + this.itemMoney
           let state = res.orderNum
@@ -236,6 +255,8 @@ export default {
           this.showOrderTxt = res.message
         }
       }).catch((error) => {
+        this.disabled001 = false
+        this.showLoading = false
         console.log(error)
         this.showOrder = true
         this.showOrderTxt = error.message

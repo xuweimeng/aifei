@@ -5,12 +5,8 @@
       <flexbox class="powerList" @click.native="ToDetails">
         <flexbox-item  class="detailItem">
           <div class="position"><i class="iconfont">&#xe77e;</i>{{ powerMessage?powerMessage.adressdetail : '' }}</div>
-          <!-- <div class="address">578m|科技大道西部科技园西365米</div> -->
         </flexbox-item>
         <flexbox-item :span="1/8">
-          <!-- <div class="flex-demo">
-            信号
-          </div> -->
         </flexbox-item>
       </flexbox>
       <div class="bianhao"><span class="span1">编号：{{ powerMessage?powerMessage.devicenum : '' }}</span><span class="span2">{{ powerMessage?powerMessage.installtime : '' }}</span></div>
@@ -22,13 +18,6 @@
           <div class="lines1 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?(useingBackground):item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
           </div>
           <div class="lines11 abs"></div>
-          <!-- <div class="lines11 abs">
-            <div class="transDiv div1 showDiv1"></div>
-            <div class="transDiv div2 showDiv2"></div>
-            <div class="transDiv div3 showDiv3"></div>
-            <div class="transDiv div4 showDiv4"></div>
-            <div class="transDiv div5 showDiv5"></div>
-          </div> -->
           <div class="lines2 abs" v-bind:class="[item.info == 1?freeBackground:item.info == 2?useingBackground:item.info == 3?disableBackground:item.info == 4?faultBackground:'']">
           </div>
           <div class="lines22 abs freeBackground"></div>
@@ -53,12 +42,13 @@
       <div>
         <alert v-model="show" title=""> {{showText}} </alert>
       </div>
+      <loading :show="show1" text=""></loading>
       <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { Flexbox, FlexboxItem, Divider, Search, XButton, Grid, GridItem, Alert, cookie } from 'vux'
+import { Flexbox, FlexboxItem, Divider, Search, XButton, Grid, GridItem, Alert, Loading, cookie } from 'vux'
 import { API } from '../../../serve/index'
 
 export default {
@@ -70,7 +60,8 @@ export default {
     XButton,
     Grid,
     GridItem,
-    Alert
+    Alert,
+    Loading
   },
   data () {
     return {
@@ -93,25 +84,49 @@ export default {
       chargeBorder1: 'chargeBorder1', // 正常
       chargeBorder2: 'chargeBorder2', // 禁用
       show: false, // 充电桩状态弹框
-      showText: '' // 充电桩状态提示语
+      showText: '', // 充电桩状态提示语
+      show1: true
     }
   },
   mounted () {
     this.getCode()
   },
   methods: {
+    closeBtn () {
+      console.log(this.$wechat)
+      if (typeof (window.WeixinJSBridge) !== 'undefined') {
+        window.WeixinJSBridge.call('closeWindow')
+      } else {
+        if (navigator.userAgent.indexOf('MSIE') > 0) {
+          if (navigator.userAgent.indexOf('MSIE 6.0') > 0) {
+            window.opener = null
+            window.close()
+          } else {
+            window.open('', '_top')
+            window.top.close()
+          }
+        } else if (navigator.userAgent.indexOf('Firefox') > 0) {
+          window.location.href = 'about:blank '
+        } else {
+          window.opener = null
+          window.open('', '_self', '')
+          window.close()
+        }
+      }
+    },
     /** 获取当前二维码的电桩信息 **/
     getCode () {
       let deviceCode = cookie.get('deviceCode')
       API.powerDetails.getDeviceInfo({
-        // 'deviceCode': '001'
         'deviceCode': deviceCode
       }).then((res) => {
+        this.show1 = false
         if (res.code === 0) {
           this.powerMessage = res.data.deviceinfoEntity
           this.powerNumber = res.data.portEntityList
         }
       }).catch((error) => {
+        this.show1 = false
         console.log(error)
       })
     },
@@ -130,7 +145,15 @@ export default {
         )
       }
     }
+  },
+  watch: {
+    '$route' (newV, oldV) {
+      if (newV.path !== oldV.path) {
+        this.getCode()
+      }
+    }
   }
+
 }
 </script>
 
@@ -364,5 +387,11 @@ export default {
   // 边框禁用
   .chargeBorder2 {
     border: 1px solid #bfbfbf;
+  }
+  // loading 的高度
+  .weui-toast {
+    width: 4.6rem!important;
+    min-height: 3.6em!important;
+    margin-left: -2.36em!important;
   }
 </style>
