@@ -34,15 +34,18 @@ if (global.browserQuery.page.includes('deviceCode')) {
   global.browserQuery.page = arr1[0]
   global.browserQuery.deviceCode = arr1[1].substring(11, arr1[1].length)
 }
-Vue.wechat.closeWindow()
+// Vue.wechat.closeWindow()
 console.log(Vue.wechat)
 cookie.set('code', global.browserQuery.code)
 router.beforeEach(function (to, from, next) {
+  console.log(global.browserQuery)
+  console.log('我是outer.beforeEach....................')
   if (global.browserQuery.page === 'list') {
     window.addEventListener('popstate', function (e) {
       window.opener = null
     }, false)
   }
+  // if (global.browserQuery.code) {
   if (global.browserQuery.deviceCode && global.browserQuery.code) {
     cookie.remove('code')
     cookie.set('deviceCode', global.browserQuery.deviceCode)
@@ -58,17 +61,19 @@ router.beforeEach(function (to, from, next) {
       document.title = to.meta.title
     }
     store.commit('updateLoadingStatus', { isLoading: true })
-    next('/')
+    return next('/')
   }
   next()
 })
 
 router.afterEach(function (to) {
+  console.log(global.browserQuery)
+  console.log('我是outer.afterEach....................')
   store.commit('updateLoadingStatus', { isLoading: false })
   if (global.browserQuery.page) {
     let p = global.browserQuery.page
     global.browserQuery = {}
-    router.push(p)
+    router.replace(p)
   }
 })
 
