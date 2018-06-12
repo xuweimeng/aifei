@@ -7,7 +7,7 @@ import App from './App'
 import WechatPlugin from 'vux/src/plugins/wechat/index.js'
 import AjaxPlugin from 'vux/src/plugins/ajax/index.js'
 import cookie from 'vux/src/tools/cookie/index.js'
-
+å
 import store from './store'
 import './config/rem'
 import getQueryString from './config/getUrl'
@@ -34,12 +34,10 @@ if (global.browserQuery.page.includes('deviceCode')) {
   global.browserQuery.page = arr1[0]
   global.browserQuery.deviceCode = arr1[1].substring(11, arr1[1].length)
 }
-// Vue.wechat.closeWindow()
 console.log(Vue.wechat)
 cookie.set('code', global.browserQuery.code)
 router.beforeEach(function (to, from, next) {
   console.log(global.browserQuery)
-  console.log('我是outer.beforeEach....................')
   if (global.browserQuery.page === 'list') {
     window.addEventListener('popstate', function (e) {
       window.opener = null
@@ -68,7 +66,6 @@ router.beforeEach(function (to, from, next) {
 
 router.afterEach(function (to) {
   console.log(global.browserQuery)
-  console.log('我是outer.afterEach....................')
   store.commit('updateLoadingStatus', { isLoading: false })
   if (global.browserQuery.page) {
     let p = global.browserQuery.page
