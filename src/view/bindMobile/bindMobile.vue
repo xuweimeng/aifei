@@ -6,6 +6,7 @@
         class="mobileInp" 
         placeholder="请输入手机号" 
         @on-blur="onBlur"
+        @on-focus="onFocus"
         keyboard="number"
         is-type="china-mobile"
         mask="999 9999 9999"
@@ -16,7 +17,7 @@
       </x-input>
     </group>
     <group style="margin-top: 2rem;">
-      <x-input class="weui-vcode mobileCode" placeholder="请输入验证码" title=""> 
+      <x-input class="weui-vcode mobileCode" placeholder="请输入验证码" title="" v-model="smsCode"> 
       </x-input>
        <x-input class="weui-vcode mobileCode2" placeholder="" style=""> 
         <div slot="right" @click="getCode" class="countBtn">
@@ -33,7 +34,13 @@
         </x-input>
     </group>
      <div>
-      <x-button class="bindBtn" @click.native="bindBtn">绑定手机号</x-button>
+      <x-button 
+      class="bindBtn" 
+      @click.native="bindBtn" 
+      :show-loading="isShowLoading"
+      :text="isShowText"
+      :disabled="isDisabled"
+      >绑定手机号</x-button>
     </div>
     <!-- 手机号验证弹框 -->
     <alert v-model="alertMobile" title="提示">{{alertText}}</alert>
@@ -43,6 +50,7 @@
 <script>
 import { XInput, Group, XButton, Countdown, Alert, cookie } from 'vux'
 import { API } from '../../serve/index'
+// import { setTimeout } from 'timers';
 export default {
   data () {
     return {
@@ -55,7 +63,11 @@ export default {
       showText2: 's后重新获取', // 倒计时文本
       isSms: false, // 是否获取过短信验证码
       alertMobile: false, // 弹框是否显示
-      alertText: '' // 弹框text
+      alertText: '', // 弹框text
+      isShowLoading: false, // 是否显示提交loading
+      isShowText: '绑定中...', // 绑定中
+      isDisabled: false, // 是否disabled
+      smsCode: '' // 验证码
     }
   },
   components: {
@@ -74,21 +86,13 @@ export default {
      */
     getCookieOpenid () {
       let cookieOpenId = cookie.get('openid')
+      let phoneNum = cookie.get('phonenum')
       if (cookieOpenId) {
         this.openid = cookieOpenId
-      } else {
-        this.getOpenId()
       }
-    },
-    /** 获取微信openid **/
-    getOpenId () {
-      API.powerDetails.getOpenId({
-        'code': cookie.get('code')
-      }).then((res) => {
-        this.openid = res.data
-      }).catch((error) => {
-        console.log(error)
-      })
+      if (phoneNum) {
+        this.mobile = phoneNum
+      }
     },
     /**
      *@function getCode
@@ -119,6 +123,14 @@ export default {
       this.start = false
       this.time1 = 60
     },
+    /** 获得焦点 */
+    onFocus () {
+      let phonenum = cookie.get('phonenum')
+      if (phonenum) {
+        this.alertMobile = true
+        this.alertText = '您已绑定手机号！'
+      }
+    },
     /**
      * 为什么无效，function无效
      */
@@ -140,8 +152,13 @@ export default {
       }).then((res) => {
         console.log(res)
         if (res.code === 0) {
+        } else {
+          this.alertMobile = true
+          this.alertText = res.message
         }
       }).catch((error) => {
+        this.alertMobile = true
+        this.alertText = error.message
         console.log(error)
       })
     },
@@ -150,17 +167,29 @@ export default {
      * @function bindBtn
      */
     bindBtn () {
+      if (this.smsCode === '') {
+        this.alertMobile = true
+        this.alertText = '验证码不能为空！'
+      } else {
+        this.bindFunc()
+      }
+    },
+    bindFunc () {
       API.powerDetails.bindPhone({
         'openid': this.openid,
-        'code': cookie.get('code'),
+        'code': this.smsCode,
         'phone': this.mobile
       }).then((res) => {
         if (res.code === 0) {
-          this.alertText = '绑定成功！'
+          this.alertMobile = true
+          this.alertText = res.message
+          setTimeout(function () {
+            this.$router.push({path: '/list'})
+          }, 1000)
         }
       }).catch((error) => {
         this.alertMobile = true
-        this.alertText = error
+        this.alertText = error.message
       })
     }
   }
