@@ -83,7 +83,6 @@ export default {
     this.getMyInfo()
   },
   methods: {
-
     getMyInfo () {
       API.powerDetails.getmyinfo({
         'code': cookie.get('code')
@@ -96,6 +95,7 @@ export default {
           this.myMoney = res.data.myMoney
           cookie.set('myMoney', res.data.myMoney)
           cookie.set('openid', this.openId)
+          cookie.set('phonenum', res.data.phonenum)
         }
       }).catch((error) => {
         console.log(error)
